@@ -1,14 +1,6 @@
 import React from "react";
-import queryString from "query-string";
-import SpotifyWebApi from "spotify-web-api-js";
 import "./App.scss";
-
-let spotify = new SpotifyWebApi();
-
-type PlaylistReference = {
-  name: string;
-  id: string;
-};
+import { SpotifyFindService } from "./services/SpotifyFindService";
 
 type AppState = {
   artists?: string[];
@@ -17,13 +9,16 @@ type AppState = {
 };
 
 class App extends React.Component<unknown, AppState> {
-  constructor() {
-    super(null);
+  private spotify: SpotifyFindService = new SpotifyFindService();
+
+  constructor(props: unknown) {
+    super(props);
     this.state = {
       artists: undefined,
       playlists: undefined,
       selectedPlaylist: undefined,
     };
+    this.spotify = new SpotifyFindService();
     this.authenticationCallback();
   }
 
@@ -33,7 +28,7 @@ class App extends React.Component<unknown, AppState> {
     return (
       <div className="App">
         <header>
-          <h1>Scamplify</h1>
+          <h1>Support music</h1>
         </header>
         <section>
           <h2>Find</h2>
@@ -45,7 +40,7 @@ class App extends React.Component<unknown, AppState> {
               <p>
                 <button onClick={this.getPlaylists}>Get playlists</button>
                 {playlists && (
-                  <select onChange={this.getPlaylist}>
+                  <select onChange={this.getPlaylistArtists}>
                     {playlists.map((playlist) => (
                       <option key={playlist.name} value={playlist.id}>
                         {playlist.name}
@@ -83,92 +78,72 @@ class App extends React.Component<unknown, AppState> {
   };
 
   private isAuthenticated = () => {
-    return spotify.getAccessToken();
+    return this.spotify.isAuthenticated();
   };
 
   private authenticate = () => {
-    const redirectUri = `http://localhost:3000/`;
-    const scopes = [
-      "playlist-read-private",
-      "playlist-read-collaborative",
-      "user-top-read",
-      "user-read-recently-played",
-    ];
-    const state = `123`;
-    window.location.href = `https://accounts.spotify.com/authorize?client_id=f3dfad56fac44b20ab4d43bf912c29ce&redirect_uri=${redirectUri}&scope=${scopes.join(
-      "%20"
-    )}&response_type=token&state=${state}`;
+    this.spotify.authenticate();
   };
 
   private authenticationCallback = () => {
     if (!window.location.hash) {
       return;
     }
-    const parsedHash = queryString.parse(window.location.hash);
-    const token = parsedHash["access_token"] as string;
-    spotify.setAccessToken(token);
-  };
-
-  private clearAuthentication = () => {
-    spotify.setAccessToken(null);
-    this.clearState();
+    try {
+      this.spotify.authenticationCallback(window.location.hash);
+    } catch (err) {
+      this.clearState();
+      this.reportError(err);
+    }
   };
 
   private getArtistsTop = async () => {
     this.clearState();
-    let response;
+    let results;
     try {
-      response = await spotify.getMyTopArtists();
+      results = await this.spotify.getUserArtistsTop();
     } catch (err) {
-      this.clearAuthentication();
+      this.clearState();
+      this.reportError(err);
       return;
     }
-    const artists = response.items.map((itemResponse) => itemResponse.name);
-    this.setState({ artists });
+    this.setState({ artists: results });
   };
 
   private getPlaylists = async () => {
     this.clearState();
-    let response;
+    let results;
     try {
-      response = await spotify.getUserPlaylists();
+      results = await this.spotify.getUserPlaylists();
     } catch (err) {
-      this.clearAuthentication();
+      this.clearState();
+      this.reportError(err);
       return;
     }
-    const playlists = response.items.map((itemResponse) => ({
-      name: itemResponse.name,
-      id: itemResponse.id,
-    }));
-    this.setState({ playlists });
+    this.setState({ playlists: results });
   };
 
-  private getPlaylist = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  private getPlaylistArtists = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const playlistId = event.currentTarget.value;
-    let response;
+    let results;
     try {
-      response = await spotify.getPlaylist(playlistId);
+      results = await this.spotify.getPlaylistArtists(playlistId);
     } catch (err) {
-      this.clearAuthentication();
+      this.clearState();
+      this.reportError(err);
       return;
     }
-    console.log(response);
-    const artists = response.tracks.items.map((trackItemResponse) => {
-      const track = trackItemResponse.track as SpotifyApi.TrackObjectFull;
-      //return track.artists.map((artist) => artist.name);
-      return track.artists[0].name;
-    });
-    //console.log(artists);
-    const artistSet = new Set(artists);
-    const newArtists = Array.from(artistSet);
-    console.log(newArtists);
-    this.setState({ artists: newArtists });
+    this.setState({ artists: results });
   };
 
   private findArtist = (event: React.MouseEvent<HTMLButtonElement>) => {
     const artist = event.currentTarget.title;
     window.open(`https://bandcamp.com/search?q=${encodeURIComponent(artist)}`);
   };
+
+  private reportError = (err: Error) => {
+    console.error(err);
+  }
 }
 
 export default App;
