@@ -87,7 +87,7 @@ class App extends React.Component<unknown, AppState> {
   };
 
   private authenticate = () => {
-    const redirectUri = `http://localhost:3000/`;
+    const redirectUri = `https://lively-sky-0c3feb303.azurestaticapps.net/`;
     const scopes = [
       "playlist-read-private",
       "playlist-read-collaborative",
