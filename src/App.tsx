@@ -1,11 +1,11 @@
 import React from "react";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   Box,
   Button,
-    Card,
-    CardContent,
-    CardActions,
+  Card,
+  CardContent,
+  CardActions,
+  CssBaseline,
   Container,
   InputLabel,
   NativeSelect,
@@ -37,68 +37,104 @@ class App extends React.Component<unknown, AppState> {
     const { artists, playlists } = this.state;
 
     return (
-        <>
-          <CssBaseline />
-      <div className="App">
-        <Container>
-        <header>
-          <h1>Support music</h1>
-        </header>
-        <section>
-          <h2>Find</h2>
-          {!this.isAuthenticated() ? (
-                  <Box>
-                    <p>
-                      To find your artists in Spotify, this app needs access to your Spotify information.
-                      It only requests access for the bare minimum of what is needed to work.
-                      Details about you or your Spotify data are not stored anywhere and the app's access to it expires
-                      in a few minutes.
-                    </p>
-                    <Button variant="contained" color="primary" onClick={this.authenticate}>Log in to Spotify</Button>
-                  </Box>
-          ) : (
-              <>
-                <p>
-                  <Button variant="contained" color="primary" onClick={this.getArtistsTop}>Get my top artists</Button>
-                </p>
-                <p>
-                  <Button variant="contained" color="primary" onClick={this.getPlaylists}>Get my playlists</Button>
-                  {playlists && (
+      <>
+        <CssBaseline />
+        <div className="App">
+          <Container>
+            <header>
+              <h1>Support music</h1>
+            </header>
+            <section>
+              <h2>Find</h2>
+              {!this.isAuthenticated() ? (
+                <Box>
+                  <p>
+                    To find your artists in Spotify, this app needs access to
+                    your Spotify information. It only requests access for the
+                    bare minimum of what is needed to work. Details about you or
+                    your Spotify data are not stored anywhere and the app's
+                    access to it expires in a few minutes.
+                  </p>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.authenticate}
+                  >
+                    Log in to Spotify
+                  </Button>
+                </Box>
+              ) : (
+                <>
+                  <p>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.getArtistsTop}
+                    >
+                      Get my top artists
+                    </Button>
+                  </p>
+                  <p>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.getPlaylists}
+                    >
+                      Get my playlists
+                    </Button>
+                    {playlists && (
                       <>
                         <InputLabel htmlFor="playlists">Playlists</InputLabel>
-                        <NativeSelect id="playlists" onChange={(event) => this.setState({selectedPlaylistId: event.currentTarget.value})}>
+                        <NativeSelect
+                          id="playlists"
+                          onChange={(event) =>
+                            this.setState({
+                              selectedPlaylistId: event.currentTarget.value,
+                            })
+                          }
+                        >
                           {playlists.map((playlist) => (
-                              <option key={playlist.name} value={playlist.id}>
-                                {playlist.name}
-                              </option>
+                            <option key={playlist.name} value={playlist.id}>
+                              {playlist.name}
+                            </option>
                           ))}
                         </NativeSelect>
-                        <Button variant="outlined" color="primary" onClick={this.getPlaylistArtists}>Get playlist artists</Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={this.getPlaylistArtists}
+                        >
+                          Get playlist artists
+                        </Button>
                       </>
-                  )}
-                </p>
-              </>
-          )}
-        </section>
-        <section>
-          <h2>Support</h2>
-          {artists &&
-          artists.sort().map((artist) => (
-              <Card>
-                <CardContent>
-                  {artist}
-                </CardContent>
-                <CardActions>
-                  <Button variant="text" color="default" key={artist} title={artist} onClick={this.findArtist}>
-                    Bandcamp
-                  </Button>
-                </CardActions>
-              </Card>
-            ))}
-        </section>
-        </Container>
-      </div>
-          </>
+                    )}
+                  </p>
+                </>
+              )}
+            </section>
+            <section>
+              <h2>Support</h2>
+              {artists &&
+                artists.sort().map((artist) => (
+                  <Card>
+                    <CardContent>{artist}</CardContent>
+                    <CardActions>
+                      <Button
+                        variant="text"
+                        color="default"
+                        key={artist}
+                        title={artist}
+                        onClick={this.findArtist}
+                      >
+                        Bandcamp
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))}
+            </section>
+          </Container>
+        </div>
+      </>
     );
   }
 
@@ -160,7 +196,9 @@ class App extends React.Component<unknown, AppState> {
     const { selectedPlaylistId } = this.state;
     let results;
     try {
-      results = await this.spotify.getPlaylistArtists(selectedPlaylistId as string);
+      results = await this.spotify.getPlaylistArtists(
+        selectedPlaylistId as string
+      );
     } catch (err) {
       this.clearState();
       this.reportError(err);
@@ -176,7 +214,7 @@ class App extends React.Component<unknown, AppState> {
 
   private reportError = (err: Error) => {
     console.error(err);
-  }
+  };
 }
 
 export default App;
