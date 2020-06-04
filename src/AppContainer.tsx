@@ -2,9 +2,8 @@ import React from "react";
 
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
-import SpotifyAuthenticate from "./find/spotify/SpotifyAuthenticate";
-import SpotifyTopArtists from "./find/spotify/SpotifyTopArtists";
-import SpotifyPlaylists from "./find/spotify/SpotifyPlaylists";
+import SpotifyFind from "./find/spotify/SpotifyFind";
+import TextUpload from "./find/text/TextUpload";
 import ArtistLink from "./link/ArtistLink";
 
 type AppState = {
@@ -40,17 +39,11 @@ class AppContainer extends React.Component<unknown, AppState> {
             <h1>Support music</h1>
           </header>
           <section>
-            {!this.isAuthenticated() ? (
-              <SpotifyAuthenticate />
-            ) : (
-              <>
-                <SpotifyTopArtists refreshArtists={this.refreshArtists} />
-                <SpotifyPlaylists
-                  refreshArtists={this.refreshArtists}
-                  newQuery={this.newQuery}
-                />
-              </>
-            )}
+            <SpotifyFind
+              refreshArtists={this.refreshArtists}
+              newQuery={this.newQuery}
+            />
+            <TextUpload refreshArtists={this.refreshArtists} />
           </section>
           <section>
             {artists &&
@@ -71,10 +64,6 @@ class AppContainer extends React.Component<unknown, AppState> {
       </>
     );
   }
-
-  private isAuthenticated = () => {
-    return this.spotify.isAuthenticated();
-  };
 }
 
 export default AppContainer;
