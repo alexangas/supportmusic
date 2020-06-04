@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {Container, Jumbotron, Tab, Tabs, Row, Col} from "react-bootstrap";
 import { IoLogoGithub } from "react-icons/io"
@@ -39,7 +39,7 @@ class AppContainer extends React.Component<unknown, AppState> {
       <>
         <Container>
           <Jumbotron>
-            <h1><Link to="/">🎵 supportmusic.online 🎧</Link></h1>
+            <h1><Link to="/"><span role="img" aria-label="Music note">🎵</span> supportmusic.online <span role="img" aria-label="Headphones">🎧</span></Link></h1>
           </Jumbotron>
           <section>
             <Tabs id="findArtists" defaultActiveKey="spotify">

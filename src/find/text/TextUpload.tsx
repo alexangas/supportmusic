@@ -1,5 +1,4 @@
 import React from "react";
-import {Container} from "react-bootstrap";
 
 type TextUploadProps = {
   refreshArtists(artists: string[]): void;
