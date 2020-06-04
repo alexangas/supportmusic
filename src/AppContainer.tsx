@@ -1,208 +1,64 @@
 import React from "react";
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardActions,
-    CssBaseline,
-    Container,
-    InputLabel,
-    NativeSelect,
-} from "@material-ui/core";
 
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
+import SpotifyAuthenticate from "./find/spotify/SpotifyAuthenticate";
+import SpotifyTopArtists from "./find/spotify/SpotifyTopArtists";
+import SpotifyPlaylists from "./find/spotify/SpotifyPlaylists";
+import ArtistLink from "./link/ArtistLink";
 
 type AppState = {
-    artists?: string[];
-    playlists?: PlaylistReference[];
-    selectedPlaylistId?: string;
+  artists?: string[];
 };
 
 class AppContainer extends React.Component<unknown, AppState> {
-    private spotify: SpotifyFindService;
+  private spotify: SpotifyFindService;
 
-    constructor(props: unknown) {
-        super(props);
-        this.state = {
-            artists: undefined,
-            playlists: undefined,
-            selectedPlaylistId: undefined,
-        };
-        this.spotify = SpotifyFindService.getInstance();
-    }
-
-    render() {
-        const { artists, playlists } = this.state;
-
-        return (
-            <>
-                <CssBaseline />
-                <div className="App">
-                    <Container>
-                        <header>
-                            <h1>Support music</h1>
-                        </header>
-                        <section>
-                            <h2>Find</h2>
-                            {!this.isAuthenticated() ? (
-                                <Box>
-                                    <p>
-                                        To find your artists in Spotify, this app needs access to
-                                        your Spotify information. It only requests access for the
-                                        bare minimum of what is needed to work. Details about you or
-                                        your Spotify data are not stored anywhere and the app's
-                                        access to it expires in a few minutes.
-                                    </p>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={this.authenticate}
-                                    >
-                                        Log in to Spotify
-                                    </Button>
-                                </Box>
-                            ) : (
-                                <>
-                                    <p>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={this.getArtistsTop}
-                                        >
-                                            Get my top artists
-                                        </Button>
-                                    </p>
-                                    <p>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={this.getPlaylists}
-                                        >
-                                            Get my playlists
-                                        </Button>
-                                        {playlists && (
-                                            <>
-                                                <InputLabel htmlFor="playlists">Playlists</InputLabel>
-                                                <NativeSelect
-                                                    id="playlists"
-                                                    onChange={(event) =>
-                                                        this.setState({
-                                                            selectedPlaylistId: event.currentTarget.value,
-                                                        })
-                                                    }
-                                                >
-                                                    {playlists.map((playlist) => (
-                                                        <option key={playlist.name} value={playlist.id}>
-                                                            {playlist.name}
-                                                        </option>
-                                                    ))}
-                                                </NativeSelect>
-                                                <Button
-                                                    variant="outlined"
-                                                    color="primary"
-                                                    onClick={this.getPlaylistArtists}
-                                                >
-                                                    Get playlist artists
-                                                </Button>
-                                            </>
-                                        )}
-                                    </p>
-                                </>
-                            )}
-                        </section>
-                        <section>
-                            <h2>Support</h2>
-                            {artists &&
-                            artists.sort().map((artist) => (
-                                <Card>
-                                    <CardContent>{artist}</CardContent>
-                                    <CardActions>
-                                        <Button
-                                            variant="text"
-                                            color="default"
-                                            key={artist}
-                                            title={artist}
-                                            onClick={this.findArtist}
-                                        >
-                                            Bandcamp
-                                        </Button>
-                                    </CardActions>
-                                </Card>
-                            ))}
-                        </section>
-                    </Container>
-                </div>
-            </>
-        );
-    }
-
-    private clearState = () => {
-        this.setState({
-            artists: undefined,
-            playlists: undefined,
-            selectedPlaylistId: undefined,
-        });
+  constructor(props: unknown) {
+    super(props);
+    this.state = {
+      artists: undefined,
     };
+    this.spotify = SpotifyFindService.getInstance();
+  }
 
-    private isAuthenticated = () => {
-        return this.spotify.isAuthenticated();
-    };
+  refreshArtists = (artists: string[]) => {
+    this.setState({ artists });
+  };
 
-    private authenticate = () => {
-        this.spotify.authenticate();
-    };
+  render() {
+    const { artists } = this.state;
 
-    private getArtistsTop = async () => {
-        this.clearState();
-        let results;
-        try {
-            results = await this.spotify.getUserArtistsTop();
-        } catch (err) {
-            this.clearState();
-            this.reportError(err);
-            return;
-        }
-        this.setState({ artists: results });
-    };
+    return (
+      <>
+        <div className="App">
+          <header>
+            <h1>Support music</h1>
+          </header>
+          <section>
+            {!this.isAuthenticated() ? (
+              <SpotifyAuthenticate />
+            ) : (
+              <>
+                <SpotifyTopArtists refreshArtists={this.refreshArtists} />
+                <SpotifyPlaylists refreshArtists={this.refreshArtists} />
+              </>
+            )}
+          </section>
+          <section>
+            {artists &&
+              artists
+                .sort()
+                .map((artist) => <ArtistLink key={artist} artist={artist} />)}
+          </section>
+        </div>
+      </>
+    );
+  }
 
-    private getPlaylists = async () => {
-        this.clearState();
-        let results;
-        try {
-            results = await this.spotify.getUserPlaylists();
-        } catch (err) {
-            this.clearState();
-            this.reportError(err);
-            return;
-        }
-        this.setState({ playlists: results });
-    };
-
-    private getPlaylistArtists = async () => {
-        const { selectedPlaylistId } = this.state;
-        let results;
-        try {
-            results = await this.spotify.getPlaylistArtists(
-                selectedPlaylistId as string
-            );
-        } catch (err) {
-            this.clearState();
-            this.reportError(err);
-            return;
-        }
-        this.setState({ artists: results });
-    };
-
-    private findArtist = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const artist = event.currentTarget.title;
-        window.open(`https://bandcamp.com/search?q=${encodeURIComponent(artist)}`);
-    };
-
-    private reportError = (err: Error) => {
-        console.error(err);
-    };
+  private isAuthenticated = () => {
+    return this.spotify.isAuthenticated();
+  };
 }
 
 export default AppContainer;

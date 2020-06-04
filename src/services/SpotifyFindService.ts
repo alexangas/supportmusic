@@ -27,7 +27,9 @@ export class SpotifyFindService implements FindService {
     const baseApiUrl = "https://accounts.spotify.com/authorize";
     const clientId = "f3dfad56fac44b20ab4d43bf912c29ce";
 
-    const redirectUri = `${encodeURIComponent(window.location.origin)}/spotify/callback`;
+    const redirectUri = `${encodeURIComponent(
+      window.location.origin
+    )}/spotify/callback`;
     const scopeArray = [
       "playlist-read-private",
       "playlist-read-collaborative",
