@@ -3,11 +3,19 @@ import * as cookies from "js-cookie";
 import queryString from "query-string";
 
 export class SpotifyFindService implements FindService {
+  private static instance: SpotifyFindService;
   private spotify: SpotifyWebApi.SpotifyWebApiJs;
   private readonly authStateName: string = "S_AUTH";
 
   constructor() {
     this.spotify = new SpotifyWebApi();
+  }
+
+  public static getInstance(): SpotifyFindService {
+    if (!SpotifyFindService.instance) {
+      SpotifyFindService.instance = new SpotifyFindService();
+    }
+    return SpotifyFindService.instance;
   }
 
   isAuthenticated(): boolean {

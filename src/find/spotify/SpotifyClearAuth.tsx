@@ -7,7 +7,7 @@ class SpotifyClearAuth extends React.Component<RouteComponentProps, unknown> {
 
     constructor(props: RouteComponentProps) {
         super(props);
-        this.spotify = new SpotifyFindService();
+        this.spotify = SpotifyFindService.getInstance();
     }
 
     componentDidMount() {

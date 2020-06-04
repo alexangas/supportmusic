@@ -30,8 +30,7 @@ class AppContainer extends React.Component<unknown, AppState> {
             playlists: undefined,
             selectedPlaylistId: undefined,
         };
-        this.spotify = new SpotifyFindService();
-        // this.authenticationCallback();
+        this.spotify = SpotifyFindService.getInstance();
     }
 
     render() {
@@ -153,18 +152,6 @@ class AppContainer extends React.Component<unknown, AppState> {
 
     private authenticate = () => {
         this.spotify.authenticate();
-    };
-
-    private authenticationCallback = () => {
-        if (!window.location.hash) {
-            return;
-        }
-        try {
-            this.spotify.authenticationCallback(window.location.hash);
-        } catch (err) {
-            this.clearState();
-            this.reportError(err);
-        }
     };
 
     private getArtistsTop = async () => {
