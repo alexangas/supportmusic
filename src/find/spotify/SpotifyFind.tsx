@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { LinkContainer } from 'react-router-bootstrap';
+import {Button} from "react-bootstrap";
+
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 import SpotifyAuthenticate from "./SpotifyAuthenticate";
 import SpotifyTopArtists from "./SpotifyTopArtists";
@@ -31,7 +33,7 @@ export const SpotifyFind = ({
             refreshArtists={refreshArtists}
             newQuery={newQuery}
           />
-          <Link to="/spotify/clearauth">Log out</Link>
+          <LinkContainer to="/spotify/clearauth"><Button variant="secondary">Log out</Button></LinkContainer>
         </>
       )}
     </>

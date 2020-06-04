@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
+import { Link } from "react-router-dom";
+import {Container, Jumbotron, Tab, Tabs, Row, Col} from "react-bootstrap";
+import { IoLogoGithub } from "react-icons/io"
 
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
@@ -34,16 +37,22 @@ class AppContainer extends React.Component<unknown, AppState> {
 
     return (
       <>
-        <div className="App">
-          <header>
-            <h1>Support music</h1>
-          </header>
+        <Container>
+          <Jumbotron>
+            <h1><Link to="/">🎵 supportmusic.online 🎧</Link></h1>
+          </Jumbotron>
           <section>
-            <SpotifyFind
-              refreshArtists={this.refreshArtists}
-              newQuery={this.newQuery}
-            />
-            <TextUpload refreshArtists={this.refreshArtists} />
+            <Tabs id="findArtists" defaultActiveKey="spotify">
+              <Tab eventKey="spotify" title="Spotify">
+                <SpotifyFind
+                  refreshArtists={this.refreshArtists}
+                  newQuery={this.newQuery}
+                />
+              </Tab>
+              <Tab eventKey="text" title="Upload list">
+                <TextUpload refreshArtists={this.refreshArtists} />
+              </Tab>
+            </Tabs>
           </section>
           <section>
             {artists &&
@@ -52,15 +61,27 @@ class AppContainer extends React.Component<unknown, AppState> {
                 .map((artist) => <ArtistLink key={artist} artist={artist} />)}
           </section>
           <footer>
+            <Container>
+              <Row>
+                <Col>Source available on
+                  {" "}
+                  <IoLogoGithub />
+                  {" "}
+                  <a href="https://github.com/alexangas/supportmusic">GitHub</a>.
+                </Col>
+                <Col>
+                  Feedback to <a href="https://www.alexangas.com/contact/">Alex Angas</a>.
+                </Col>
+              </Row>
+            </Container>
             <div>
-              Source available on{" "}
-              <a href="https://github.com/alexangas/supportmusic">GitHub</a>.
+
             </div>
             <div>
-              Project by <a href="https://alexangas.com">Alex Angas</a>.
+
             </div>
           </footer>
-        </div>
+        </Container>
       </>
     );
   }

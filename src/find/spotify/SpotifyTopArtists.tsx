@@ -1,4 +1,6 @@
 import React from "react";
+import {Button} from "react-bootstrap";
+
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type SpotifyTopArtistsProps = {
@@ -16,11 +18,9 @@ export const SpotifyTopArtists = ({
   };
 
   return (
-    <div>
-      <p>
-        <button onClick={getArtistsTop}>Get my top artists</button>
-      </p>
-    </div>
+    <>
+      <Button onClick={getArtistsTop} variant="primary">Get my top artists</Button>
+    </>
   );
 };
 

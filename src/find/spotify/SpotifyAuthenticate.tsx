@@ -1,4 +1,6 @@
 import React from "react";
+import {Button} from "react-bootstrap";
+
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 export const SpotifyAuthenticate = (): JSX.Element => {
@@ -16,7 +18,7 @@ export const SpotifyAuthenticate = (): JSX.Element => {
         needed to work. Details about you or your Spotify data are not stored
         anywhere and the app's access to it expires in a few minutes.
       </p>
-      <button onClick={authenticate}>Log in to Spotify</button>
+      <Button onClick={authenticate} variant="primary">Log in to Spotify</Button>
     </div>
   );
 };

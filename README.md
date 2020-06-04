@@ -20,6 +20,9 @@ It utilises the following technologies:
 - [Create React App](https://github.com/facebook/create-react-app)
 - [React Router](https://reacttraining.com/react-router/)
 - [Spotify Web API JS](https://github.com/JMPerez/spotify-web-api-js)
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Darkly theme](https://bootswatch.com/darkly/)
+- [React Icons](https://react-icons.github.io/)
 - [Azure Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/)
 
 ## Acknowledgements

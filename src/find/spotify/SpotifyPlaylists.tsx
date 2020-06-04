@@ -1,4 +1,6 @@
 import React from "react";
+import {Button} from "react-bootstrap";
+
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type SpotifyPlaylistsProps = {
@@ -43,8 +45,8 @@ class SpotifyPlaylists extends React.Component<
     const { playlists } = this.state;
 
     return (
-      <div>
-        <button onClick={this.getPlaylists}>Get my playlists</button>
+      <>
+        <Button onClick={this.getPlaylists} variant="primary">Get my playlists</Button>
         {playlists && (
           <>
             <label htmlFor="playlists">Playlists</label>
@@ -55,12 +57,12 @@ class SpotifyPlaylists extends React.Component<
                 </option>
               ))}
             </select>
-            <button onClick={this.getPlaylistArtists}>
+            <Button onClick={this.getPlaylistArtists} variant="secondary">
               Get playlist artists
-            </button>
+            </Button>
           </>
         )}
-      </div>
+      </>
     );
   }
 }

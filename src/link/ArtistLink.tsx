@@ -1,4 +1,6 @@
 import React from "react";
+import {Card, Button} from "react-bootstrap";
+import {FaBandcamp} from "react-icons/all";
 
 type ArtistLinkProps = {
   artist: string;
@@ -6,16 +8,18 @@ type ArtistLinkProps = {
 
 export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
   return (
-    <div>
-      <p>{artist}</p>
-      <a
-        href={`https://bandcamp.com/search?q=${encodeURIComponent(artist)}`}
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        Bandcamp
-      </a>
-    </div>
+    <Card>
+        <Card.Body>
+            <Card.Title>{artist}</Card.Title>
+            <Button as="a"
+                href={`https://bandcamp.com/search?q=${encodeURIComponent(artist)}`}
+                target="_blank"
+                rel="noreferrer noopener"
+            >
+                <FaBandcamp />{" "}Bandcamp
+            </Button>
+        </Card.Body>
+    </Card>
   );
 };
 
