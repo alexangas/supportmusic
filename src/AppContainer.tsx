@@ -28,7 +28,7 @@ class AppContainer extends React.Component<unknown, AppState> {
 
   newQuery = () => {
     this.setState({ artists: undefined });
-  }
+  };
 
   render() {
     const { artists } = this.state;
@@ -45,7 +45,10 @@ class AppContainer extends React.Component<unknown, AppState> {
             ) : (
               <>
                 <SpotifyTopArtists refreshArtists={this.refreshArtists} />
-                <SpotifyPlaylists refreshArtists={this.refreshArtists} newQuery={this.newQuery} />
+                <SpotifyPlaylists
+                  refreshArtists={this.refreshArtists}
+                  newQuery={this.newQuery}
+                />
               </>
             )}
           </section>
@@ -55,6 +58,15 @@ class AppContainer extends React.Component<unknown, AppState> {
                 .sort()
                 .map((artist) => <ArtistLink key={artist} artist={artist} />)}
           </section>
+          <footer>
+            <div>
+              Source available on{" "}
+              <a href="https://github.com/alexangas/supportmusic">GitHub</a>.
+            </div>
+            <div>
+              Project by <a href="https://alexangas.com">Alex Angas</a>.
+            </div>
+          </footer>
         </div>
       </>
     );
