@@ -9,6 +9,11 @@ export const TextUpload = ({
 }: TextUploadProps): JSX.Element => {
   const filesUploaded = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = (event.currentTarget.files as FileList)[0];
+    if (file.size > 5000) {
+      // TODO: Error message
+      refreshArtists([]);
+      return;
+    }
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       const fileContents = e.target?.result;
@@ -16,15 +21,19 @@ export const TextUpload = ({
         const csvResult = fileContents
           ?.toString()
           .split(",")
-          .map((value) => value.trim())
-          .filter((value) => value.length > 0);
+          .map((value) => value.replace(/\W*/, "").trim())
+          .filter(
+            (value, _, result) => value.length > 0 && result.indexOf(value) >= 0
+          );
         refreshArtists(csvResult || []);
       } else {
         const txtResult = fileContents
           ?.toString()
           .split(/\n/g)
-          .map((value) => value.trim())
-          .filter((value) => value.length > 0);
+          .map((value) => value.replace(/\W*/, "").trim())
+          .filter(
+            (value, _, result) => value.length > 0 && result.indexOf(value) >= 0
+          );
         refreshArtists(txtResult || []);
       }
     };
