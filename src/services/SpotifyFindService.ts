@@ -4,7 +4,7 @@ import queryString from "query-string";
 
 export class SpotifyFindService implements FindService {
   private spotify: SpotifyWebApi.SpotifyWebApiJs;
-  private readonly authStateName: string = "S_STATE";
+  private readonly authStateName: string = "S_AUTH";
 
   constructor() {
     this.spotify = new SpotifyWebApi();
@@ -18,10 +18,8 @@ export class SpotifyFindService implements FindService {
   authenticate(): void {
     const baseApiUrl = "https://accounts.spotify.com/authorize";
     const clientId = "f3dfad56fac44b20ab4d43bf912c29ce";
-    const redirectUri = encodeURIComponent(
-      "https://lively-sky-0c3feb303.azurestaticapps.net/"
-    );
-    // TODO const redirectUri = encodeURIComponent("https://localhost:3000/");
+
+    const redirectUri = `${encodeURIComponent(window.location.origin)}/spotify/callback`;
     const scopeArray = [
       "playlist-read-private",
       "playlist-read-collaborative",
