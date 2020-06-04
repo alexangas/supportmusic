@@ -102,13 +102,14 @@ export class SpotifyFindService implements FindService {
       this.clearAuthentication();
       throw err;
     }
-    const artists = response.tracks.items.map((trackItemResponse) => {
+    const artistSet = new Set<string>();
+    response.tracks.items.forEach(trackItemResponse => {
       const track = trackItemResponse.track as SpotifyApi.TrackObjectFull;
-      // TODO
-      //return track.artists.map((artist) => artist.name);
-      return track.artists[0].name;
-    });
-    const artistSet = new Set(artists);
+      track.artists.forEach(artist => {
+        artistSet.add(artist.name);
+        console.log(`Artist ${artist.name} external URLs:`, artist);
+      })
+    })
     return Array.from(artistSet);
   }
 }
