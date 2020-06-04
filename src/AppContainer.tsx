@@ -26,6 +26,10 @@ class AppContainer extends React.Component<unknown, AppState> {
     this.setState({ artists });
   };
 
+  newQuery = () => {
+    this.setState({ artists: undefined });
+  }
+
   render() {
     const { artists } = this.state;
 
@@ -41,7 +45,7 @@ class AppContainer extends React.Component<unknown, AppState> {
             ) : (
               <>
                 <SpotifyTopArtists refreshArtists={this.refreshArtists} />
-                <SpotifyPlaylists refreshArtists={this.refreshArtists} />
+                <SpotifyPlaylists refreshArtists={this.refreshArtists} newQuery={this.newQuery} />
               </>
             )}
           </section>

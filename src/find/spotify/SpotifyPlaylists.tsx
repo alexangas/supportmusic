@@ -3,6 +3,7 @@ import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type SpotifyPlaylistsProps = {
   refreshArtists(artists: string[]): void;
+  newQuery(): void;
 };
 
 type SpotifyPlaylistsState = {
@@ -35,6 +36,7 @@ class SpotifyPlaylists extends React.Component<
   };
 
   private getPlaylists = async () => {
+    this.props.newQuery();
     const results = await this.spotify.getUserPlaylists();
     this.setState({ playlists: results });
   };
