@@ -3,6 +3,7 @@ import React from "react";
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
 import SpotifyFind from "./find/spotify/SpotifyFind";
+import TextUpload from "./find/text/TextUpload";
 import ArtistLink from "./link/ArtistLink";
 
 type AppState = {
@@ -42,6 +43,7 @@ class AppContainer extends React.Component<unknown, AppState> {
               refreshArtists={this.refreshArtists}
               newQuery={this.newQuery}
             />
+            <TextUpload refreshArtists={this.refreshArtists} />
           </section>
           <section>
             {artists &&
