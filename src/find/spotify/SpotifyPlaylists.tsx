@@ -63,10 +63,7 @@ class SpotifyPlaylists extends React.Component<
               Get my playlists
             </Button>
             {playlists && (
-              <Form.Group
-                className="pt-2"
-                as={Row}
-              >
+              <Form.Group className="pt-2" as={Row}>
                 <Col xs="auto">
                   <Form.Label htmlFor={this.playlistElementId} srOnly>
                     Playlists

@@ -5,7 +5,9 @@
 }
 
 $spacers: (
-         6: (1rem * 6)
+  6: (
+    1rem * 6,
+  ),
 );
 
 @import "./styles/darkly/variables";
