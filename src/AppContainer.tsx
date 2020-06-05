@@ -50,7 +50,7 @@ class AppContainer extends React.Component<unknown, AppState> {
                 {/*<span role="img" aria-label="Headphones">🎧</span>*/}
               </h1>
               <p className="lead">
-                Support the artists you listen to and buy from them.
+                Support the artists you listen to and buy from them online.
               </p>
             </Col>
           </Row>

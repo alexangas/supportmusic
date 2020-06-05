@@ -66,7 +66,6 @@ class SpotifyPlaylists extends React.Component<
               <Form.Group
                 className="pt-2"
                 as={Row}
-                controlId="spotifyPlaylistForm"
               >
                 <Col xs="auto">
                   <Form.Label htmlFor={this.playlistElementId} srOnly>
