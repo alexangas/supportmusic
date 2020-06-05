@@ -7,27 +7,52 @@ type SpotifyTopArtistsProps = {
   refreshArtists(artists: string[]): void;
 };
 
-export const SpotifyTopArtists = ({
-  refreshArtists,
-}: SpotifyTopArtistsProps): JSX.Element => {
-  const spotify = SpotifyFindService.getInstance();
+type SpotifyTopArtistsState = {
+  isLoadingArtists: boolean;
+};
 
-  const getArtistsTop = async () => {
-    const results = await spotify.getUserArtistsTop();
-    refreshArtists(results);
+class SpotifyTopArtists extends React.Component<
+  SpotifyTopArtistsProps,
+  SpotifyTopArtistsState
+> {
+  private spotify: SpotifyFindService;
+
+  constructor(props: SpotifyTopArtistsProps) {
+    super(props);
+    this.state = {
+      isLoadingArtists: false,
+    };
+    this.spotify = SpotifyFindService.getInstance();
+  }
+
+  private getArtistsTop = async () => {
+    this.setState({ isLoadingArtists: true });
+
+    const results = await this.spotify.getUserArtistsTop();
+
+    this.setState({ isLoadingArtists: false });
+    this.props.refreshArtists(results);
   };
 
-  return (
-    <Row className="mb-4">
-      <Col>
-        <Form>
-          <Button onClick={getArtistsTop} variant="primary">
-            Get my top artists
-          </Button>
-        </Form>
-      </Col>
-    </Row>
-  );
-};
+  render() {
+    const { isLoadingArtists } = this.state;
+
+    return (
+      <Row className="mb-4">
+        <Col>
+          <Form>
+            <Button
+              disabled={isLoadingArtists}
+              onClick={!isLoadingArtists ? this.getArtistsTop : () => {}}
+              variant="primary"
+            >
+              {isLoadingArtists ? "Loading..." : "Get my top artists"}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    );
+  }
+}
 
 export default SpotifyTopArtists;

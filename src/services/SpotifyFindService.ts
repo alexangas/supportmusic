@@ -124,7 +124,7 @@ export class SpotifyFindService implements FindService {
       this.clearAuthentication();
       throw err;
     }
-    console.log(response);
+    // console.log(response);
     const artistSet = new Set<string>();
     response.items.forEach((trackItemResponse) => {
       const track = trackItemResponse?.track as SpotifyApi.TrackObjectSimplified;
