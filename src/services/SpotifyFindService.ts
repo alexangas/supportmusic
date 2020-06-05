@@ -43,7 +43,9 @@ export class SpotifyFindService implements FindService {
     window.crypto.getRandomValues(stateArray);
     const state = stateArray.join("");
     cookies.set(this.authStateName, state, {
-      expires: new Date(Date.now() + SpotifyFindService.minutesAllowedToLogIn * 60 * 1000),
+      expires: new Date(
+        Date.now() + SpotifyFindService.minutesAllowedToLogIn * 60 * 1000
+      ),
       secure: true,
     });
 

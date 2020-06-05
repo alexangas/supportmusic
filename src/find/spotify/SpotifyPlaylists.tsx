@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Form, Row, Col} from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
@@ -29,7 +29,7 @@ class SpotifyPlaylists extends React.Component<
 
   private getPlaylistArtists = async () => {
     const playlistsElement = document.getElementById(
-        this.playlistElementId
+      this.playlistElementId
     ) as HTMLSelectElement;
     const selectedPlaylistId = playlistsElement.value;
     const results = await this.spotify.getPlaylistArtists(selectedPlaylistId);
@@ -46,34 +46,36 @@ class SpotifyPlaylists extends React.Component<
     const { playlists } = this.state;
 
     return (
-        <Row>
-          <Col>
+      <Row className="mb-4">
+        <Col>
           <Form>
-        <Button onClick={this.getPlaylists} variant="primary">Get my playlists</Button>
-        {playlists && (
-          <Form.Group as={Row} controlId="spotifyPlaylistForm">
-            <Col xs="auto">
-            <Form.Label htmlFor={this.playlistElementId} srOnly>
-              Playlists
-            </Form.Label>
-              <Form.Control as="select" id={this.playlistElementId}>
-                {playlists?.map((playlist) => (
-                  <option key={playlist.id} value={playlist.id}>
-                    {playlist.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Col>
-            <Col xs="auto">
-              <Button onClick={this.getPlaylistArtists} variant="secondary">
-                Get playlist artists
-              </Button>
-            </Col>
-          </Form.Group>
-        )}
-      </Form>
-          </Col>
-        </Row>
+            <Button onClick={this.getPlaylists} variant="primary">
+              Get my playlists
+            </Button>
+            {playlists && (
+              <Form.Group className="pt-2" as={Row} controlId="spotifyPlaylistForm">
+                <Col xs="auto">
+                  <Form.Label htmlFor={this.playlistElementId} srOnly>
+                    Playlists
+                  </Form.Label>
+                  <Form.Control as="select" id={this.playlistElementId}>
+                    {playlists?.map((playlist) => (
+                      <option key={playlist.id} value={playlist.id}>
+                        {playlist.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col xs="auto">
+                  <Button onClick={this.getPlaylistArtists} variant="secondary">
+                    Get playlist artists
+                  </Button>
+                </Col>
+              </Form.Group>
+            )}
+          </Form>
+        </Col>
+      </Row>
     );
   }
 }
