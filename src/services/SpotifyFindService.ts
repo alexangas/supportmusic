@@ -129,7 +129,7 @@ export class SpotifyFindService implements FindService {
       if (track) {
         track.artists.forEach((artist) => {
           if (artist) {
-            artistSet.add(artist?.name);
+            artistSet.add(artist.name);
           }
         });
       }
