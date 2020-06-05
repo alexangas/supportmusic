@@ -2,6 +2,14 @@ import SpotifyWebApi from "spotify-web-api-js";
 import * as cookies from "js-cookie";
 import queryString from "query-string";
 
+export enum TopArtistsTimeRange {
+  ShortTerm = "short_term",
+  MediumTerm = "medium_term",
+  LongTerm = "long_term"
+}
+
+type TopArtistsTimeRangeStrings = keyof typeof TopArtistsTimeRange;
+
 export class SpotifyFindService implements FindService {
   private static instance: SpotifyFindService;
   private spotify: SpotifyWebApi.SpotifyWebApiJs;
@@ -71,10 +79,13 @@ export class SpotifyFindService implements FindService {
     this.spotify.setAccessToken(null);
   }
 
-  async getUserArtistsTop(): Promise<string[]> {
+  async getUserArtistsTop(timeRangeKey?: TopArtistsTimeRangeStrings): Promise<string[]> {
     let response;
     try {
-      response = await this.spotify.getMyTopArtists();
+      response = await this.spotify.getMyTopArtists({
+        limit: 50,
+        "time_range": TopArtistsTimeRange.ShortTerm
+      });
     } catch (err) {
       this.clearAuthentication();
       throw err;
@@ -85,12 +96,15 @@ export class SpotifyFindService implements FindService {
   async getUserPlaylists(): Promise<PlaylistReference[]> {
     let response;
     try {
-      response = await this.spotify.getUserPlaylists();
+      response = await this.spotify.getUserPlaylists(undefined, {
+        limit: 50
+      });
     } catch (err) {
       this.clearAuthentication();
       throw err;
     }
-    return response.items.map((itemResponse) => ({
+    return response.items?.filter((itemResponse) => itemResponse.tracks.total > 0)
+  .map((itemResponse) => ({
       name: itemResponse.name,
       id: itemResponse.id,
     }));
@@ -99,16 +113,18 @@ export class SpotifyFindService implements FindService {
   async getPlaylistArtists(id: string): Promise<string[]> {
     let response;
     try {
-      response = await this.spotify.getPlaylist(id);
+      response = await this.spotify.getPlaylist(id, {
+        fields: "tracks.items(track(artists(name)))"
+      });
     } catch (err) {
       this.clearAuthentication();
       throw err;
     }
     const artistSet = new Set<string>();
     response.tracks.items.forEach((trackItemResponse) => {
-      const track = trackItemResponse.track as SpotifyApi.TrackObjectFull;
-      track.artists.forEach((artist) => {
-        artistSet.add(artist.name);
+      const track = trackItemResponse?.track as SpotifyApi.TrackObjectSimplified;
+      track?.artists.forEach((artist) => {
+        artistSet.add(artist?.name);
       });
     });
     return Array.from(artistSet);

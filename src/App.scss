@@ -4,6 +4,10 @@
   line-height: 1.2;
 }
 
+$spacers: (
+         6: (1rem * 6)
+);
+
 @import "./styles/darkly/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "./styles/darkly/bootswatch";

@@ -38,7 +38,7 @@ class AppContainer extends React.Component<unknown, AppState> {
 
     return (
       <>
-        <Container as="main" role="main" className="pb-5">
+        <Container as="main" role="main" className="pb-6">
           <Row className="mt-4">
             <Col lg="10" md="8" sm="6">
               <h1 className="display-4">
