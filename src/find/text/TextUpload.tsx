@@ -1,5 +1,5 @@
 import React from "react";
-import {Form} from "react-bootstrap";
+import { Col, Form, Row} from "react-bootstrap";
 
 type TextUploadProps = {
   refreshArtists(artists: string[]): void;
@@ -42,9 +42,24 @@ export const TextUpload = ({
   };
 
   return (
+      <>
+        <Row>
+          <Col lg="12">
+        <p>
+          Upload a list of artists from your device without logging in!
+        </p><p>
+          Either a plain text file with one artist per line, or a CSV file on one line is accepted.
+        </p>
+          </Col>
+        </Row>
+            <Row>
+              <Col lg="12">
     <Form>
-      <Form.File id="fileUpload" label="Choose text file of artists to upload" custom onChange={filesUploaded} />
+      <Form.File id="fileUpload" label="Choose a text file of artists to upload" custom onChange={filesUploaded} />
     </Form>
+              </Col>
+            </Row>
+        </>
   );
 };
 

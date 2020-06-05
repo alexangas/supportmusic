@@ -1,3 +1,21 @@
+.display-5 {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
 @import "./styles/darkly/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "./styles/darkly/bootswatch";
+
+.nav-tabs {
+  .nav-link.active {
+    background-color: $primary;
+  }
+}
+
+.tab-pane {
+  &.border-left, &.border-right {
+    border-color: $gray-700 !important;
+  }
+}

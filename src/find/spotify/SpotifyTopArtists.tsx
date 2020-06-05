@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Row, Col} from "react-bootstrap";
 
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
@@ -18,9 +18,13 @@ export const SpotifyTopArtists = ({
   };
 
   return (
-    <Form>
-      <Button onClick={getArtistsTop} variant="primary">Get my top artists</Button>
-    </Form>
+      <Row>
+        <Col>
+          <Form>
+            <Button onClick={getArtistsTop} variant="primary">Get my top artists</Button>
+          </Form>
+        </Col>
+      </Row>
   );
 };
 

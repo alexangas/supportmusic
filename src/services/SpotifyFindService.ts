@@ -6,6 +6,7 @@ export class SpotifyFindService implements FindService {
   private static instance: SpotifyFindService;
   private spotify: SpotifyWebApi.SpotifyWebApiJs;
   private readonly authStateName: string = "S_AUTH";
+  public static readonly minutesAllowedToLogIn = 5;
 
   constructor() {
     this.spotify = new SpotifyWebApi();
@@ -41,9 +42,8 @@ export class SpotifyFindService implements FindService {
     const stateArray = new Uint32Array(8);
     window.crypto.getRandomValues(stateArray);
     const state = stateArray.join("");
-    const minutesAllowedToLogIn = 5;
     cookies.set(this.authStateName, state, {
-      expires: new Date(Date.now() + minutesAllowedToLogIn * 60 * 1000),
+      expires: new Date(Date.now() + SpotifyFindService.minutesAllowedToLogIn * 60 * 1000),
       secure: true,
     });
 

@@ -46,7 +46,9 @@ class SpotifyPlaylists extends React.Component<
     const { playlists } = this.state;
 
     return (
-      <Form>
+        <Row>
+          <Col>
+          <Form>
         <Button onClick={this.getPlaylists} variant="primary">Get my playlists</Button>
         {playlists && (
           <Form.Group as={Row} controlId="spotifyPlaylistForm">
@@ -70,6 +72,8 @@ class SpotifyPlaylists extends React.Component<
           </Form.Group>
         )}
       </Form>
+          </Col>
+        </Row>
     );
   }
 }
