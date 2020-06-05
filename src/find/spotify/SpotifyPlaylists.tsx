@@ -10,6 +10,8 @@ type SpotifyPlaylistsProps = {
 
 type SpotifyPlaylistsState = {
   playlists?: PlaylistReference[];
+  isLoadingPlaylists: boolean;
+  isLoadingArtists: boolean;
 };
 
 class SpotifyPlaylists extends React.Component<
@@ -23,21 +25,16 @@ class SpotifyPlaylists extends React.Component<
     super(props);
     this.state = {
       playlists: undefined,
+      isLoadingPlaylists: false,
+      isLoadingArtists: false,
     };
     this.spotify = SpotifyFindService.getInstance();
   }
 
-  private getPlaylistArtists = async () => {
-    const playlistsElement = document.getElementById(
-      this.playlistElementId
-    ) as HTMLSelectElement;
-    const selectedPlaylistId = playlistsElement.value;
-    const results = await this.spotify.getPlaylistArtists(selectedPlaylistId);
-    this.props.refreshArtists(results);
-  };
-
   private getPlaylists = async () => {
     this.props.newQuery();
+    this.setState({ isLoadingPlaylists: true });
+
     const results = (await this.spotify.getUserPlaylists()).sort(
       (refa, refb) => {
         if (refa.name > refb.name) {
@@ -49,24 +46,38 @@ class SpotifyPlaylists extends React.Component<
         return 0;
       }
     );
-    this.setState({ playlists: results });
+    this.setState({ playlists: results, isLoadingPlaylists: false });
+  };
+
+  private getPlaylistArtists = async () => {
+    this.setState({ isLoadingArtists: true });
+
+    const playlistsElement = document.getElementById(
+      this.playlistElementId
+    ) as HTMLSelectElement;
+    const selectedPlaylistId = playlistsElement.value;
+    const results = await this.spotify.getPlaylistArtists(selectedPlaylistId);
+
+    this.setState({ isLoadingArtists: false });
+    this.props.refreshArtists(results);
   };
 
   render() {
-    const { playlists } = this.state;
+    const { playlists, isLoadingPlaylists, isLoadingArtists } = this.state;
 
     return (
       <Row className="mb-4">
         <Col>
           <Form>
-            <Button onClick={this.getPlaylists} variant="primary">
-              Get my playlists
+            <Button
+              disabled={isLoadingPlaylists}
+              onClick={!isLoadingPlaylists ? this.getPlaylists : () => {}}
+              variant="primary"
+            >
+              {isLoadingPlaylists ? "Loading..." : "Get my playlists"}
             </Button>
             {playlists && (
-              <Form.Group
-                className="pt-2"
-                as={Row}
-              >
+              <Form.Group className="pt-2" as={Row}>
                 <Col xs="auto">
                   <Form.Label htmlFor={this.playlistElementId} srOnly>
                     Playlists
@@ -80,8 +91,14 @@ class SpotifyPlaylists extends React.Component<
                   </Form.Control>
                 </Col>
                 <Col xs="auto">
-                  <Button onClick={this.getPlaylistArtists} variant="secondary">
-                    Get playlist artists
+                  <Button
+                    disabled={isLoadingArtists}
+                    onClick={
+                      !isLoadingArtists ? this.getPlaylistArtists : () => {}
+                    }
+                    variant="secondary"
+                  >
+                    {isLoadingArtists ? "Loading..." : "Get playlist artists"}
                   </Button>
                 </Col>
               </Form.Group>
