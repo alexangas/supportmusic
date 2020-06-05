@@ -118,7 +118,7 @@ export class SpotifyFindService implements FindService {
     try {
       response = await this.spotify.getPlaylistTracks(id, {
         fields: "items(added_at,track(artists(name))),offset,total",
-        limit: 100
+        limit: 100,
       });
     } catch (err) {
       this.clearAuthentication();
