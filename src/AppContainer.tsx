@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {Container, Jumbotron, Tab, Tabs, Row, Col} from "react-bootstrap";
+import {Container, Jumbotron, Tab, Tabs, Row, Col, CardColumns} from "react-bootstrap";
 import { IoLogoGithub } from "react-icons/io"
 
 import "./App.scss";
@@ -39,7 +39,12 @@ class AppContainer extends React.Component<unknown, AppState> {
       <>
         <Container>
           <Jumbotron>
-            <h1><Link to="/"><span role="img" aria-label="Music note">🎵</span> supportmusic.online <span role="img" aria-label="Headphones">🎧</span></Link></h1>
+            <h1>
+              <Link to="/">Support Music</Link>
+              <span role="img" aria-label="Microphone">🎤</span>
+              {/*<span role="img" aria-label="Music note">🎵</span>*/}
+              {/*<span role="img" aria-label="Headphones">🎧</span>*/}
+            </h1>
           </Jumbotron>
           <section>
             <Tabs id="findArtists" defaultActiveKey="spotify">
@@ -56,9 +61,12 @@ class AppContainer extends React.Component<unknown, AppState> {
           </section>
           <section>
             {artists &&
-              artists
+            <CardColumns>
+              {artists
                 .sort()
                 .map((artist) => <ArtistLink key={artist} artist={artist} />)}
+            </CardColumns>
+            }
           </section>
           <footer>
             <Container>

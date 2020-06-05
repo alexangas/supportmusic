@@ -1,4 +1,5 @@
 import React from "react";
+import {Form} from "react-bootstrap";
 
 type TextUploadProps = {
   refreshArtists(artists: string[]): void;
@@ -41,9 +42,9 @@ export const TextUpload = ({
   };
 
   return (
-    <>
-      <input type="file" id="fileUpload" onChange={filesUploaded} />
-    </>
+    <Form>
+      <Form.File id="fileUpload" label="Choose text file of artists to upload" custom onChange={filesUploaded} />
+    </Form>
   );
 };
 
