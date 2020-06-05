@@ -45,7 +45,7 @@ export const TextUpload = ({
     <>
       <Row>
         <Col lg="12">
-          <p>Upload a list of artists from your device without logging in!</p>
+          <p>Upload a list of artists from your device without logging in.</p>
           <p>
             Either a plain text file with one artist per line, or a CSV file on
             one line is accepted.

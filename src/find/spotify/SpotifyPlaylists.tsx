@@ -38,7 +38,17 @@ class SpotifyPlaylists extends React.Component<
 
   private getPlaylists = async () => {
     this.props.newQuery();
-    const results = await this.spotify.getUserPlaylists();
+    const results = (await this.spotify.getUserPlaylists()).sort(
+      (refa, refb) => {
+        if (refa.name > refb.name) {
+          return 1;
+        }
+        if (refa.name < refb.name) {
+          return -1;
+        }
+        return 0;
+      }
+    );
     this.setState({ playlists: results });
   };
 
@@ -53,7 +63,11 @@ class SpotifyPlaylists extends React.Component<
               Get my playlists
             </Button>
             {playlists && (
-              <Form.Group className="pt-2" as={Row} controlId="spotifyPlaylistForm">
+              <Form.Group
+                className="pt-2"
+                as={Row}
+                controlId="spotifyPlaylistForm"
+              >
                 <Col xs="auto">
                   <Form.Label htmlFor={this.playlistElementId} srOnly>
                     Playlists

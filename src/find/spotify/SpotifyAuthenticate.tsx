@@ -18,7 +18,7 @@ export const SpotifyAuthenticate = (): JSX.Element => {
             To find your artists in Spotify, this app needs access to your
             Spotify information.
           </p>
-          <p>
+          <p className="text-muted">
             Only the bare minimum request to make this app work is made. Details
             about you or your Spotify data are only stored while you use this
             page and not anywhere else. The app's access to Spotify expires in{" "}

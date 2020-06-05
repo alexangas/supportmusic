@@ -1,6 +1,6 @@
 import React from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import {Button, Form} from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 import SpotifyAuthenticate from "./SpotifyAuthenticate";
