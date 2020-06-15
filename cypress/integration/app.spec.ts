@@ -1,12 +1,12 @@
 // type definitions for Cypress object "cy"
 /// <reference types="cypress" />
 
-describe("App", function() {
-  beforeEach(function() {
+describe("App", () => {
+  beforeEach(() => {
     cy.visit("/");
   });
 
-  it("renders the app", function() {
+  it("renders the app", () => {
     cy.get("main").should("contain", "Support Music");
   });
 });
