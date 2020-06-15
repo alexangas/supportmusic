@@ -32,6 +32,20 @@ jobs:
           app_artifact_location: "build" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
+  cypress-run:
+    if: github.event_name == 'push'
+    needs: build_and_deploy_job
+    runs-on: ubuntu-latest
+    name: Cypress E2E on Chrome
+    steps:
+      - run: echo ::set-env name=PULL_NUMBER::$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+        shell: bash
+      - uses: actions/checkout@v1
+      - uses: cypress-io/github-action@v1
+        with:
+          browser: chrome
+          env: host=lively-sky-0c3feb303-${{ PULL_NUMBER }}.westeurope.azurestaticapps.net,port=443
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
