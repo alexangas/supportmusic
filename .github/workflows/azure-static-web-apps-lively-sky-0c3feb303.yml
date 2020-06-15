@@ -38,13 +38,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Cypress E2E on Chrome
     steps:
-      - run: echo ::set-env name=PULL_NUMBER::$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+      - run: |
+          echo ::set-env name=PULL_NUMBER::$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+          echo $PULL_NUMBER
         shell: bash
       - uses: actions/checkout@v1
       - uses: cypress-io/github-action@v1
         with:
           browser: chrome
-          env: host=lively-sky-0c3feb303-${PULL_NUMBER}.westeurope.azurestaticapps.net,port=443
+          env: CYPRESS_BASE_URL=https://lively-sky-0c3feb303-${PULL_NUMBER}.westeurope.azurestaticapps.net
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
