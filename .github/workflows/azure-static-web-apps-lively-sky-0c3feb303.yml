@@ -44,7 +44,7 @@ jobs:
       - uses: cypress-io/github-action@v1
         with:
           browser: chrome
-          env: host=lively-sky-0c3feb303-${{ PULL_NUMBER }}.westeurope.azurestaticapps.net,port=443
+          env: host=lively-sky-0c3feb303-${PULL_NUMBER}.westeurope.azurestaticapps.net,port=443
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
