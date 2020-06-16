@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: |
           TEST_URL="https://lively-sky-0c3feb303.azurestaticapps.net"
-          if [ -z "${{ github.event.pull_request.number }}" ]; then TEST_URL="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net" ; fi
+          if [ -n "${{ github.event.pull_request.number }}" ]; then TEST_URL="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net" ; fi
           echo ::set-output name=TEST_URL::${TEST_URL}
       - name: Cypress E2E Tests
         uses: cypress-io/github-action@v1
