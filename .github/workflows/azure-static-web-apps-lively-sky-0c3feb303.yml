@@ -53,6 +53,7 @@ jobs:
       - uses: cypress-io/github-action@v1
         env:
           CYPRESS_BASE_URL: https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           browser: chrome
           # env: CYPRESS_BASE_URL=https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net
