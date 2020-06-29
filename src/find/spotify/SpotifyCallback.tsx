@@ -15,7 +15,7 @@ class SpotifyCallback extends React.Component<RouteComponentProps, unknown> {
     if (!window.location.hash) {
       return;
     }
-    this.spotify.authenticationCallback(window.location.hash);
+    const expiresInSeconds = this.spotify.authenticationCallback(window.location.hash);
     this.props.history.replace("/");
   }
 

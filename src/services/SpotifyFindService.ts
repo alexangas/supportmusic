@@ -60,7 +60,7 @@ export class SpotifyFindService implements FindService {
     window.location.href = `${baseApiUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}&response_type=token&state=${state}`;
   }
 
-  authenticationCallback(value: string): void {
+  authenticationCallback(value: string): number {
     const parsedHash = queryString.parse(value);
 
     const state = parsedHash["state"] as string;
@@ -68,11 +68,12 @@ export class SpotifyFindService implements FindService {
     if (state !== recordedState) {
       throw new Error("Mismatched state parameter");
     }
+    cookies.remove(this.authStateName);
 
-    // const expiresInSeconds = parsedHash["expires_in"] as number;
-
+    const expiresInSeconds = parseInt(parsedHash["expires_in"] as string, 10);
     const token = parsedHash["access_token"] as string;
     this.spotify.setAccessToken(token);
+    return expiresInSeconds;
   }
 
   clearAuthentication(): void {
