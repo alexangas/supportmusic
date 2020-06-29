@@ -1,9 +1,3 @@
-.display-5 {
-  font-size: 2rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
 $spacers: (
   6: (
     1rem * 6,
@@ -11,6 +5,7 @@ $spacers: (
 );
 
 @import "./styles/darkly/variables";
+$enable-responsive-font-sizes: true;
 @import "~bootstrap/scss/bootstrap";
 @import "./styles/darkly/bootswatch";
 

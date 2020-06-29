@@ -41,7 +41,7 @@ class AppContainer extends React.Component<unknown, AppState> {
         <Container as="main" role="main" className="pb-6">
           <Row className="mt-4">
             <Col lg="10" md="8" sm="6">
-              <h1 className="display-4">
+              <h1 className="display-3">
                 <Link to="/">Support Music</Link>
                 <span role="img" aria-label="Microphone">
                   🎤
@@ -57,7 +57,7 @@ class AppContainer extends React.Component<unknown, AppState> {
           <section className="mt-3">
             <Row>
               <Col lg="12">
-                <h2 className="display-5">Find artists</h2>
+                <h2 className="display-4">Find artists</h2>
                 <p>
                   Provide a list of artists you wish to support either from
                   Spotify, or upload artist names from your device.
@@ -85,7 +85,7 @@ class AppContainer extends React.Component<unknown, AppState> {
               <>
                 <Row>
                   <Col lg="12">
-                    <h2 className="display-5">Support artists</h2>
+                    <h2 className="display-4">Support artists</h2>
                     <p>
                       Now, click on a link in the card below to find music and
                       merch!
