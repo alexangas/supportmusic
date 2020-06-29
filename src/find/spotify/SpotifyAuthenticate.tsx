@@ -21,9 +21,7 @@ export const SpotifyAuthenticate = (): JSX.Element => {
           <p className="text-muted">
             Minimal data in order to make the app work is requested. Your
             Spotify data is only stored within your browser while you use this
-            page and not anywhere else. The app's access to Spotify expires in{" "}
-            {SpotifyFindService.minutesAllowedToLogIn} minutes from when you log
-            in.
+            page and not anywhere else.
           </p>
         </Col>
       </Row>

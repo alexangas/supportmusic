@@ -14,7 +14,7 @@ export class SpotifyFindService implements FindService {
   private static instance: SpotifyFindService;
   private spotify: SpotifyWebApi.SpotifyWebApiJs;
   private readonly authStateName: string = "S_AUTH";
-  public static readonly minutesAllowedToLogIn = 5;
+  public static readonly minutesAllowedToLogIn = 3600 / 60;
 
   constructor() {
     this.spotify = new SpotifyWebApi();
