@@ -42,6 +42,11 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/?!(react-icons)"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
