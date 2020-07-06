@@ -16,10 +16,10 @@ export const SpotifyFind = ({
   refreshArtists,
   newQuery,
 }: SpotifyFindProps): JSX.Element => {
-  const spotify = SpotifyFindService.getInstance();
+  const spotifyFindService = SpotifyFindService.getInstance();
 
   const isAuthenticated = () => {
-    return spotify.isAuthenticated();
+    return spotifyFindService.isAuthenticated();
   };
 
   return (

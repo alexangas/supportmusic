@@ -4,10 +4,10 @@ import { Button, Col, Row } from "react-bootstrap";
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 export const SpotifyAuthenticate = (): JSX.Element => {
-  const spotify = SpotifyFindService.getInstance();
+  const spotifyFindService = SpotifyFindService.getInstance();
 
   const authenticate = () => {
-    spotify.authenticate();
+    spotifyFindService.authenticate();
   };
 
   return (

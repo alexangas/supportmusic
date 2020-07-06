@@ -1,6 +1,8 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import { TextEntryService } from "../../services/TextEntryService";
+
 type TextUploadProps = {
   refreshArtists(artists: string[]): void;
 };
@@ -8,6 +10,8 @@ type TextUploadProps = {
 export const TextUpload = ({
   refreshArtists,
 }: TextUploadProps): JSX.Element => {
+  const textEntryService = TextEntryService.getInstance();
+
   const filesUploaded = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = (event.currentTarget.files as FileList)[0];
     if (file.size > 5000) {
@@ -19,23 +23,9 @@ export const TextUpload = ({
     fileReader.onload = (e) => {
       const fileContents = e.target?.result;
       if (file.name.endsWith(".csv")) {
-        const csvResult = fileContents
-          ?.toString()
-          .split(",")
-          .map((value) => value.replace(/\W*/, "").trim())
-          .filter(
-            (value, _, result) => value.length > 0 && result.indexOf(value) >= 0
-          );
-        refreshArtists(csvResult || []);
+        refreshArtists(fileContents ? textEntryService.getCleanedArtists(fileContents.toString(), ",") : []);
       } else {
-        const txtResult = fileContents
-          ?.toString()
-          .split(/\n/g)
-          .map((value) => value.replace(/\W*/, "").trim())
-          .filter(
-            (value, _, result) => value.length > 0 && result.indexOf(value) >= 0
-          );
-        refreshArtists(txtResult || []);
+        refreshArtists(fileContents ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g) : []);
       }
     };
     fileReader.readAsText(file);
@@ -45,7 +35,7 @@ export const TextUpload = ({
     <>
       <Row>
         <Col lg="12">
-          <p>Upload a list of artists from your device without logging in.</p>
+          <p>Upload a list of artists from your device.</p>
           <p>
             Either a plain text file with one artist per line, or a CSV file on
             one line is accepted.

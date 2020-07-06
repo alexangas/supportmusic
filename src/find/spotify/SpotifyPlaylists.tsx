@@ -18,7 +18,7 @@ class SpotifyPlaylists extends React.Component<
   SpotifyPlaylistsProps,
   SpotifyPlaylistsState
 > {
-  private spotify: SpotifyFindService;
+  private spotifyFindService: SpotifyFindService;
   private readonly playlistElementId: string = "spotifyPlaylists";
 
   constructor(props: SpotifyPlaylistsProps) {
@@ -28,14 +28,14 @@ class SpotifyPlaylists extends React.Component<
       isLoadingPlaylists: false,
       isLoadingArtists: false,
     };
-    this.spotify = SpotifyFindService.getInstance();
+    this.spotifyFindService = SpotifyFindService.getInstance();
   }
 
   private getPlaylists = async () => {
     this.props.newQuery();
     this.setState({ isLoadingPlaylists: true });
 
-    const results = (await this.spotify.getUserPlaylists()).sort(
+    const results = (await this.spotifyFindService.getUserPlaylists()).sort(
       (refa, refb) => {
         if (refa.name > refb.name) {
           return 1;
@@ -56,7 +56,7 @@ class SpotifyPlaylists extends React.Component<
       this.playlistElementId
     ) as HTMLSelectElement;
     const selectedPlaylistId = playlistsElement.value;
-    const results = await this.spotify.getPlaylistArtists(selectedPlaylistId);
+    const results = await this.spotifyFindService.getPlaylistArtists(selectedPlaylistId);
 
     this.setState({ isLoadingArtists: false });
     this.props.refreshArtists(results);

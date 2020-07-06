@@ -7,6 +7,7 @@ import { FaTwitter } from "react-icons/fa";
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
 import SpotifyFind from "./find/spotify/SpotifyFind";
+import TextEntry from "./find/text/TextEntry";
 import TextUpload from "./find/text/TextUpload";
 import ArtistLink from "./link/ArtistLink";
 
@@ -46,8 +47,6 @@ class AppContainer extends React.Component<unknown, AppState> {
                 <span role="img" aria-label="Microphone">
                   🎤
                 </span>
-                {/*<span role="img" aria-label="Music note">🎵</span>*/}
-                {/*<span role="img" aria-label="Headphones">🎧</span>*/}
               </h1>
               <p className="lead">
                 Support the artists you listen to and buy from them online.
@@ -73,7 +72,10 @@ class AppContainer extends React.Component<unknown, AppState> {
                       newQuery={this.newQuery}
                     />
                   </Tab>
-                  <Tab eventKey="text" title="Upload" className="px-3 py-4">
+                  <Tab eventKey="textEntry" title="Text" className="px-3 py-4">
+                    <TextEntry refreshArtists={this.refreshArtists} />
+                  </Tab>
+                  <Tab eventKey="textUpload" title="Upload" className="px-3 py-4">
                     <TextUpload refreshArtists={this.refreshArtists} />
                   </Tab>
                 </Tabs>
