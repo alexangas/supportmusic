@@ -75,11 +75,7 @@ class AppContainer extends React.Component<unknown, AppState> {
                   <Tab eventKey="textEntry" title="Text" className="px-3 py-4">
                     <TextEntry refreshArtists={this.refreshArtists} />
                   </Tab>
-                  <Tab
-                    eventKey="textUpload"
-                    title="Upload"
-                    className="px-3 py-4"
-                  >
+                  <Tab eventKey="textUpload" title="Upload" className="px-3 py-4">
                     <TextUpload refreshArtists={this.refreshArtists} />
                   </Tab>
                 </Tabs>
