@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, Form, Row} from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 import { TextEntryService } from "../../services/TextEntryService";
 
@@ -7,18 +7,20 @@ type TextEntryProps = {
   refreshArtists(artists: string[]): void;
 };
 
-export const TextEntry = ({
-  refreshArtists,
-}: TextEntryProps): JSX.Element => {
+export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
   const textEntryService = TextEntryService.getInstance();
   const textEntryElementId: string = "artistsTextEntry";
 
   const artistsClick = () => {
     const textEntryElement = document.getElementById(
-        textEntryElementId
+      textEntryElementId
     ) as HTMLTextAreaElement;
     const textContents = textEntryElement.value;
-    refreshArtists(textContents ? textEntryService.getCleanedArtists(textContents.toString(), /\n/g) : []);
+    refreshArtists(
+      textContents
+        ? textEntryService.getCleanedArtists(textContents.toString(), /\n/g)
+        : []
+    );
   };
 
   return (
@@ -33,7 +35,11 @@ export const TextEntry = ({
           <Form>
             <Form.Group controlId={textEntryElementId}>
               <Form.Label>Artists you wish to find:</Form.Label>
-              <Form.Control as="textarea" placeholder="Enter one artist per row" rows={6} />
+              <Form.Control
+                as="textarea"
+                placeholder="Enter one artist per row"
+                rows={6}
+              />
             </Form.Group>
             <Button variant="primary" onClick={artistsClick}>
               Refresh

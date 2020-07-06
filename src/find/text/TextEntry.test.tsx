@@ -5,15 +5,15 @@ import TextEntry from "./TextEntry";
 const setup = () => {
   const refreshArtists = jest.fn();
   const utils = render(<TextEntry refreshArtists={refreshArtists} />);
-  const textElement = utils.getByRole('textbox');
-  const buttonElement = utils.getByRole('button');
+  const textElement = utils.getByRole("textbox");
+  const buttonElement = utils.getByRole("button");
   return {
     textElement,
     buttonElement,
     refreshArtists,
-    ...utils
-  }
-}
+    ...utils,
+  };
+};
 
 test("renders text entry", () => {
   const { textElement } = setup();
@@ -28,8 +28,10 @@ test("submits blank artists for refresh", () => {
 
 test("submits artists for refresh", () => {
   const { textElement, buttonElement, refreshArtists } = setup();
-  const sampleArtists = ['ArtistA','ArtistB','ArtistC'];
-  fireEvent.change(textElement, { target: { value:sampleArtists.join('\n') }});
+  const sampleArtists = ["ArtistA", "ArtistB", "ArtistC"];
+  fireEvent.change(textElement, {
+    target: { value: sampleArtists.join("\n") },
+  });
   fireEvent.click(buttonElement);
   expect(refreshArtists).toBeCalledWith(sampleArtists);
 });

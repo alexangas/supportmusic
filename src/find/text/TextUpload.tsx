@@ -23,9 +23,17 @@ export const TextUpload = ({
     fileReader.onload = (e) => {
       const fileContents = e.target?.result;
       if (file.name.endsWith(".csv")) {
-        refreshArtists(fileContents ? textEntryService.getCleanedArtists(fileContents.toString(), ",") : []);
+        refreshArtists(
+          fileContents
+            ? textEntryService.getCleanedArtists(fileContents.toString(), ",")
+            : []
+        );
       } else {
-        refreshArtists(fileContents ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g) : []);
+        refreshArtists(
+          fileContents
+            ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g)
+            : []
+        );
       }
     };
     fileReader.readAsText(file);
