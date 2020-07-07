@@ -22,19 +22,11 @@ export const TextUpload = ({
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       const fileContents = e.target?.result;
-      if (file.name.endsWith(".csv")) {
-        refreshArtists(
-          fileContents
-            ? textEntryService.getCleanedArtists(fileContents.toString(), ",")
-            : []
-        );
-      } else {
-        refreshArtists(
-          fileContents
-            ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g)
-            : []
-        );
-      }
+      refreshArtists(
+        fileContents
+          ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g)
+          : []
+      );
     };
     fileReader.readAsText(file);
   };
@@ -43,10 +35,9 @@ export const TextUpload = ({
     <>
       <Row>
         <Col lg="12">
-          <p>Upload a list of artists from your device.</p>
+          <p>Upload a list of artists!</p>
           <p>
-            Either a plain text file with one artist per line, or a CSV file on
-            one line is accepted.
+            A plain text file with one artist per line is accepted.
           </p>
         </Col>
       </Row>

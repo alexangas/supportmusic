@@ -37,8 +37,9 @@ export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
               <Form.Label>Artists you wish to find:</Form.Label>
               <Form.Control
                 as="textarea"
-                placeholder="Enter one artist per row"
+                placeholder="Enter one artist per line"
                 rows={6}
+                wrap={`off`}
               />
             </Form.Group>
             <Button variant="primary" onClick={artistsClick}>

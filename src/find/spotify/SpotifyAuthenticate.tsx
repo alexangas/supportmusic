@@ -15,8 +15,7 @@ export const SpotifyAuthenticate = (): JSX.Element => {
       <Row>
         <Col lg="12">
           <p>
-            To find your artists in Spotify, this app needs access to your
-            Spotify information.
+            To find artists in your Spotify, please log in to give this app access.
           </p>
           <p className="text-muted">
             Minimal data in order to make the app work is requested. Your
