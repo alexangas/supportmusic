@@ -15,20 +15,20 @@ class SpotifyTopArtists extends React.Component<
   SpotifyTopArtistsProps,
   SpotifyTopArtistsState
 > {
-  private spotify: SpotifyFindService;
+  private spotifyFindService: SpotifyFindService;
 
   constructor(props: SpotifyTopArtistsProps) {
     super(props);
     this.state = {
       isLoadingArtists: false,
     };
-    this.spotify = SpotifyFindService.getInstance();
+    this.spotifyFindService = SpotifyFindService.getInstance();
   }
 
   private getArtistsTop = async () => {
     this.setState({ isLoadingArtists: true });
 
-    const results = await this.spotify.getUserArtistsTop();
+    const results = await this.spotifyFindService.getUserArtistsTop();
 
     this.setState({ isLoadingArtists: false });
     this.props.refreshArtists(results);

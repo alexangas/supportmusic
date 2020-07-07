@@ -7,6 +7,7 @@ import { FaTwitter } from "react-icons/fa";
 import "./App.scss";
 import { SpotifyFindService } from "./services/SpotifyFindService";
 import SpotifyFind from "./find/spotify/SpotifyFind";
+import TextEntry from "./find/text/TextEntry";
 import TextUpload from "./find/text/TextUpload";
 import ArtistLink from "./link/ArtistLink";
 
@@ -38,7 +39,7 @@ class AppContainer extends React.Component<unknown, AppState> {
 
     return (
       <>
-        <Container as="main" role="main" className="pb-6">
+        <Container as="main" role="main" className="pb-5">
           <Row className="mt-4">
             <Col lg="10" md="8" sm="6">
               <h1 className="display-3">
@@ -46,11 +47,9 @@ class AppContainer extends React.Component<unknown, AppState> {
                 <span role="img" aria-label="Microphone">
                   🎤
                 </span>
-                {/*<span role="img" aria-label="Music note">🎵</span>*/}
-                {/*<span role="img" aria-label="Headphones">🎧</span>*/}
               </h1>
               <p className="lead">
-                Support the artists you listen to and buy from them online.
+                Support artists you listen to and buy from them online!
               </p>
             </Col>
           </Row>
@@ -58,10 +57,10 @@ class AppContainer extends React.Component<unknown, AppState> {
             <Row>
               <Col lg="12">
                 <h2 className="display-4">Find artists</h2>
-                <p>
-                  Provide a list of artists you wish to support either from
-                  Spotify, or upload artist names from your device.
-                </p>
+                {/*<p>*/}
+                {/*  Provide a list of artists you wish to support either from*/}
+                {/*  Spotify, or upload artist names from your device.*/}
+                {/*</p>*/}
               </Col>
             </Row>
             <Row>
@@ -73,7 +72,10 @@ class AppContainer extends React.Component<unknown, AppState> {
                       newQuery={this.newQuery}
                     />
                   </Tab>
-                  <Tab eventKey="text" title="Upload" className="px-3 py-4">
+                  <Tab eventKey="textEntry" title="Text" className="px-3 py-4">
+                    <TextEntry refreshArtists={this.refreshArtists} />
+                  </Tab>
+                  <Tab eventKey="textUpload" title="Upload" className="px-3 py-4">
                     <TextUpload refreshArtists={this.refreshArtists} />
                   </Tab>
                 </Tabs>
@@ -87,13 +89,11 @@ class AppContainer extends React.Component<unknown, AppState> {
                   <Col lg="12">
                     <h2 className="display-4">Support artists</h2>
                     <p>
-                      Now, click on a link in the card below to find music and
-                      merch!
+                      Now find music and merch!
                     </p>
                     <p>
-                      Links to Bandcamp let you search there, but look for links
-                      that are labelled "artist" to make sure you are supporting
-                      them. Not all artists are available.
+                      Bandcamp buttons start a search. Look for results
+                      labelled "artist" to make sure you are supporting them.
                     </p>
                   </Col>
                 </Row>
@@ -106,7 +106,7 @@ class AppContainer extends React.Component<unknown, AppState> {
             )}
           </section>
         </Container>
-        <footer className="fixed-bottom pb-4 text-muted">
+        <footer className="pb-4 text-muted">
           <Container>
             <Row>
               <Col>

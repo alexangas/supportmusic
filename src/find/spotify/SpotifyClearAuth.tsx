@@ -3,15 +3,15 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 class SpotifyClearAuth extends React.Component<RouteComponentProps, unknown> {
-  private spotify: SpotifyFindService;
+  private spotifyFindService: SpotifyFindService;
 
   constructor(props: RouteComponentProps) {
     super(props);
-    this.spotify = SpotifyFindService.getInstance();
+    this.spotifyFindService = SpotifyFindService.getInstance();
   }
 
   componentDidMount() {
-    this.spotify.clearAuthentication();
+    this.spotifyFindService.clearAuthentication();
     this.props.history.replace("/");
     this.props.location.pathname = "/";
   }

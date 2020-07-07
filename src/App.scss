@@ -1,28 +1,13 @@
-$spacers: (
-  6: (
-    1rem * 6,
-  ),
-);
-
 @import "./styles/darkly/variables";
 $enable-responsive-font-sizes: true;
 @import "~bootstrap/scss/bootstrap";
 @import "./styles/darkly/bootswatch";
 
 .nav-tabs {
-  .nav-link.active {
-    background-color: $primary;
-    border: none;
+  .nav-link {
+    &.active {
+      background-color: $primary;
+      border: none;
+    }
   }
-}
-
-.tab-pane {
-  &.border-left,
-  &.border-right {
-    border-color: $gray-700 !important;
-  }
-}
-
-footer {
-  background-color: $body-bg;
 }

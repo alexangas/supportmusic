@@ -4,10 +4,10 @@ import { Button, Col, Row } from "react-bootstrap";
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 export const SpotifyAuthenticate = (): JSX.Element => {
-  const spotify = SpotifyFindService.getInstance();
+  const spotifyFindService = SpotifyFindService.getInstance();
 
   const authenticate = () => {
-    spotify.authenticate();
+    spotifyFindService.authenticate();
   };
 
   return (
@@ -15,8 +15,7 @@ export const SpotifyAuthenticate = (): JSX.Element => {
       <Row>
         <Col lg="12">
           <p>
-            To find your artists in Spotify, this app needs access to your
-            Spotify information.
+            To find artists in your Spotify, please log in to give this app access.
           </p>
           <p className="text-muted">
             Minimal data in order to make the app work is requested. Your
