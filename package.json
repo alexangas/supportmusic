@@ -15,7 +15,7 @@
     "react-router-dom": "~5.2.0",
     "react-scripts": "3.4.1",
     "spotify-web-api-js": "~1.4.0",
-    "typescript": "~3.9.6"
+    "typescript": "~3.9.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.0",
