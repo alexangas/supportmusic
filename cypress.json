@@ -1,4 +1,8 @@
 {
   "baseUrl": "https://localhost:3000",
-  "projectId": "p6hx6d"
+  "projectId": "p6hx6d",
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }
