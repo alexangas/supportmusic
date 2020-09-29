@@ -31,6 +31,12 @@ jobs:
           api_location: "" # Api source code path - optional
           app_artifact_location: "build" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+
+  cypress_e2e:
+    needs: build_and_deploy_job
+    runs-on: ubuntu-16.04
+    name: E2E on Chrome
+    steps:
       - name: Initialize test variables
         shell: bash
         run: |
@@ -38,12 +44,14 @@ jobs:
           if [ -n "${{ github.event.pull_request.number }}" ]; then CYPRESS_BASE_URL="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net" ; fi
           echo "::set-env name=CYPRESS_BASE_URL::${CYPRESS_BASE_URL}"
       - name: Cypress E2E Tests
-        uses: cypress-io/github-action@v2
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        with:
-          record: true
-          browser: chrome
+        steps:
+          - uses: actions/checkout@v1
+          - uses: cypress-io/github-action@v2
+            env:
+              CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+            with:
+              record: true
+              browser: chrome
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
