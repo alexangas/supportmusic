@@ -15,10 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Build And Deploy
+      - name: Build and Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         with:
@@ -43,16 +44,16 @@ jobs:
           CYPRESS_BASE_URL="https://lively-sky-0c3feb303.azurestaticapps.net"
           if [ -n "${{ github.event.pull_request.number }}" ]; then CYPRESS_BASE_URL="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net" ; fi
           echo "::set-env name=CYPRESS_BASE_URL::${CYPRESS_BASE_URL}"
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Cypress E2E Tests
-        steps:
-          - uses: actions/checkout@v1
-          - uses: cypress-io/github-action@v2
-            env:
-              CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            with:
-              record: true
-              browser: chrome
+        uses: cypress-io/github-action@v2
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          record: true
+          browser: chrome
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
