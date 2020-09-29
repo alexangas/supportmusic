@@ -1,6 +1,7 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import * as cookies from "js-cookie";
 import queryString from "query-string";
+import { getAllPages } from "./SpotifyPagination";
 
 export enum TopArtistsTimeRange {
   ShortTerm = "short_term",
@@ -12,7 +13,7 @@ type TopArtistsTimeRangeStrings = keyof typeof TopArtistsTimeRange;
 
 export class SpotifyFindService implements FindService {
   private static instance: SpotifyFindService;
-  private spotify: SpotifyWebApi.SpotifyWebApiJs;
+  private readonly spotify: SpotifyWebApi.SpotifyWebApiJs;
   private readonly authStateName: string = "S_AUTH";
   public static readonly minutesAllowedToLogIn = 3600 / 60;
 
@@ -117,15 +118,17 @@ export class SpotifyFindService implements FindService {
   async getPlaylistArtists(id: string): Promise<string[]> {
     let response;
     try {
-      response = await this.spotify.getPlaylistTracks(id, {
-        fields: "items(added_at,track(artists(name))),offset,total",
-        limit: 100,
-      });
+      response = await getAllPages<SpotifyApi.PlaylistTrackResponse>(
+          this.spotify,
+          this.spotify.getPlaylistTracks(id, {
+            fields: "items(track(artists(id,name))),next",
+            limit: 100,
+          })
+      );
     } catch (err) {
       this.clearAuthentication();
       throw err;
     }
-    // console.log(response);
     const artistSet = new Set<string>();
     response.items.forEach((trackItemResponse) => {
       const track = trackItemResponse?.track as SpotifyApi.TrackObjectSimplified;
