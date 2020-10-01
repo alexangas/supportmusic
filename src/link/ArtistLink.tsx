@@ -4,7 +4,7 @@ import { FaExternalLinkAlt } from "react-icons/all";
 import BandcampButton from "../images/bandcamp-button-circle-whitecolor/bandcamp-button-circle-whitecolor-32.png";
 
 type ArtistLinkProps = {
-  artist: string;
+  artist: ArtistReference;
 };
 
 export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
@@ -14,7 +14,9 @@ export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
       <Card.Body>
         <Button
           as="a"
-          href={`https://bandcamp.com/search?q=${encodeURIComponent(artist)}`}
+          href={`https://bandcamp.com/search?q=${encodeURIComponent(
+            artist.name
+          )}`}
           target="_blank"
           rel="noreferrer noopener"
         >

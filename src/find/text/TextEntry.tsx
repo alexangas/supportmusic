@@ -4,7 +4,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { TextEntryService } from "../../services/TextEntryService";
 
 type TextEntryProps = {
-  refreshArtists(artists: string[]): void;
+  refreshArtists(artists: ArtistReference[]): void;
 };
 
 export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
@@ -18,7 +18,9 @@ export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
     const textContents = textEntryElement.value;
     refreshArtists(
       textContents
-        ? textEntryService.getCleanedArtists(textContents.toString(), /\n/g)
+        ? textEntryService
+            .getCleanedArtists(textContents.toString(), /\n/g)
+            .map((name) => ({ name }))
         : []
     );
   };

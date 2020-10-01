@@ -4,7 +4,7 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type SpotifyTopArtistsProps = {
-  refreshArtists(artists: string[]): void;
+  refreshArtists(artists: ArtistReference[]): void;
 };
 
 type SpotifyTopArtistsState = {

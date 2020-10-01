@@ -83,7 +83,7 @@ export class SpotifyFindService implements FindService {
 
   async getUserArtistsTop(
     timeRangeKey?: TopArtistsTimeRangeStrings
-  ): Promise<string[]> {
+  ): Promise<ArtistReference[]> {
     let response;
     try {
       response = await this.spotify.getMyTopArtists({
@@ -94,7 +94,10 @@ export class SpotifyFindService implements FindService {
       this.clearAuthentication();
       throw err;
     }
-    return response.items.map((itemResponse) => itemResponse.name);
+    return response.items.map((itemResponse) => ({
+      name: itemResponse.name,
+      spotifyId: itemResponse.id,
+    }));
   }
 
   async getUserPlaylists(): Promise<PlaylistReference[]> {
@@ -111,31 +114,34 @@ export class SpotifyFindService implements FindService {
       ?.filter((itemResponse) => itemResponse.tracks.total > 0)
       .map((itemResponse) => ({
         name: itemResponse.name,
-        id: itemResponse.id,
+        spotifyId: itemResponse.id,
       }));
   }
 
-  async getPlaylistArtists(id: string): Promise<string[]> {
+  async getPlaylistArtists(id: string): Promise<ArtistReference[]> {
     let response;
     try {
       response = await getAllPages<SpotifyApi.PlaylistTrackResponse>(
-          this.spotify,
-          this.spotify.getPlaylistTracks(id, {
-            fields: "items(track(artists(id,name))),next",
-            limit: 100,
-          })
+        this.spotify,
+        this.spotify.getPlaylistTracks(id, {
+          fields: "items(track(artists(id,name))),next",
+          limit: 100,
+        })
       );
     } catch (err) {
       this.clearAuthentication();
       throw err;
     }
-    const artistSet = new Set<string>();
+    const artistSet = new Set<ArtistReference>();
     response.items.forEach((trackItemResponse) => {
       const track = trackItemResponse?.track as SpotifyApi.TrackObjectSimplified;
       if (track) {
         track.artists.forEach((artist) => {
           if (artist) {
-            artistSet.add(artist.name);
+            artistSet.add({
+              name: artist.name,
+              spotifyId: artist.id,
+            });
           }
         });
       }

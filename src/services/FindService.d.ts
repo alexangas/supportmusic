@@ -3,7 +3,7 @@ interface FindService {
   authenticate(): void;
   authenticationCallback(value: string): number;
   clearAuthentication(): void;
-  getUserArtistsTop(): Promise<string[]>;
+  getUserArtistsTop(): Promise<ArtistReference[]>;
   getUserPlaylists(): Promise<PlaylistReference[]>;
-  getPlaylistArtists(id: string): Promise<string[]>;
+  getPlaylistArtists(id: string): Promise<ArtistReference[]>;
 }

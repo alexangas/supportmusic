@@ -1,4 +1,9 @@
 type PlaylistReference = {
-  id: string;
+  spotifyId: string;
+  name: string;
+};
+
+type ArtistReference = {
+  spotifyId?: string;
   name: string;
 };

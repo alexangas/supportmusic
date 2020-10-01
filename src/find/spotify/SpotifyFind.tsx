@@ -8,7 +8,7 @@ import SpotifyTopArtists from "./SpotifyTopArtists";
 import SpotifyPlaylists from "./SpotifyPlaylists";
 
 type SpotifyFindProps = {
-  refreshArtists(artists: string[]): void;
+  refreshArtists(artists: ArtistReference[]): void;
   newQuery(): void;
 };
 

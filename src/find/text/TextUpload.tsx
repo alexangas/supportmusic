@@ -4,7 +4,7 @@ import { Col, Form, Row } from "react-bootstrap";
 import { TextEntryService } from "../../services/TextEntryService";
 
 type TextUploadProps = {
-  refreshArtists(artists: string[]): void;
+  refreshArtists(artists: ArtistReference[]): void;
 };
 
 export const TextUpload = ({
@@ -24,7 +24,9 @@ export const TextUpload = ({
       const fileContents = e.target?.result;
       refreshArtists(
         fileContents
-          ? textEntryService.getCleanedArtists(fileContents.toString(), /\n/g)
+          ? textEntryService
+              .getCleanedArtists(fileContents.toString(), /\n/g)
+              .map((name) => ({ name }))
           : []
       );
     };
@@ -36,9 +38,7 @@ export const TextUpload = ({
       <Row>
         <Col lg="12">
           <p>Upload a list of artists!</p>
-          <p>
-            A plain text file with one artist per line is accepted.
-          </p>
+          <p>A plain text file with one artist per line is accepted.</p>
         </Col>
       </Row>
       <Row>

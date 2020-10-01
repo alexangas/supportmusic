@@ -4,7 +4,7 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type SpotifyPlaylistsProps = {
-  refreshArtists(artists: string[]): void;
+  refreshArtists(artists: ArtistReference[]): void;
   newQuery(): void;
 };
 
@@ -86,7 +86,10 @@ class SpotifyPlaylists extends React.Component<
                   </Form.Label>
                   <Form.Control as="select" id={this.playlistElementId}>
                     {playlists?.map((playlist) => (
-                      <option key={playlist.id} value={playlist.id}>
+                      <option
+                        key={playlist.spotifyId}
+                        value={playlist.spotifyId}
+                      >
                         {playlist.name}
                       </option>
                     ))}
