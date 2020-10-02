@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
 import { TextEntryService } from "../../services/TextEntryService";
-import {SpotifyFindService} from "../../services/SpotifyFindService";
+import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type TextEntryProps = {
   refreshArtists(artists: ArtistReference[]): void;
@@ -15,24 +15,23 @@ export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
 
   const artistsClick = () => {
     const textEntryElement = document.getElementById(
-        textEntryElementId
+      textEntryElementId
     ) as HTMLTextAreaElement;
     const textContents = textEntryElement.value;
     const artists: ArtistReference[] = textContents
-        ? textEntryService
-            .getCleanedArtists(textContents.toString(), /\n/g)
-            .map((name) => ({name}))
-        : [];
+      ? textEntryService
+          .getCleanedArtists(textContents.toString(), /\n/g)
+          .map((name) => ({ name }))
+      : [];
 
     if (spotifyFindService.isAuthenticated()) {
-      spotifyFindService.populateMissingArtistDetails(artists)
-          .then(() => {
-            refreshArtists(artists);
-          });
+      spotifyFindService.populateMissingArtistDetails(artists).then(() => {
+        refreshArtists(artists);
+      });
     } else {
       refreshArtists(artists);
     }
-  }
+  };
 
   return (
     <>

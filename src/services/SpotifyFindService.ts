@@ -1,7 +1,7 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import * as cookies from "js-cookie";
 import queryString from "query-string";
-import {getAllPages} from "./SpotifyPagination";
+import { getAllPages } from "./SpotifyPagination";
 
 export enum TopArtistsTimeRange {
   ShortTerm = "short_term",
@@ -97,7 +97,7 @@ export class SpotifyFindService implements FindService {
     return response.items.map((itemResponse) => ({
       name: itemResponse.name,
       spotifyId: itemResponse.id,
-      popularity: itemResponse.popularity
+      popularity: itemResponse.popularity,
     }));
   }
 
@@ -154,8 +154,7 @@ export class SpotifyFindService implements FindService {
     let response;
     let artists: ArtistReference[] = [];
     console.log("ids", ids);
-    for (let idCount = 0; idCount < ids.length; idCount += 50)
-    {
+    for (let idCount = 0; idCount < ids.length; idCount += 50) {
       const idSlice = ids.slice(idCount, idCount + 50);
       console.log("idSlice", idSlice);
       try {
@@ -165,11 +164,13 @@ export class SpotifyFindService implements FindService {
         throw err;
       }
       console.log("getArtists", response);
-      artists = artists.concat(response.artists.map((artistResponse) => ({
-        name: artistResponse.name,
-        spotifyId: artistResponse.id,
-        popularity: artistResponse.popularity
-      })));
+      artists = artists.concat(
+        response.artists.map((artistResponse) => ({
+          name: artistResponse.name,
+          spotifyId: artistResponse.id,
+          popularity: artistResponse.popularity,
+        }))
+      );
     }
     console.log("artists", JSON.parse(JSON.stringify(artists)));
     return artists;
@@ -179,7 +180,7 @@ export class SpotifyFindService implements FindService {
     let response;
     try {
       response = await this.spotify.searchArtists(encodeURIComponent(name), {
-        limit: 1
+        limit: 1,
       });
     } catch (err) {
       this.clearAuthentication();
@@ -188,33 +189,37 @@ export class SpotifyFindService implements FindService {
     return response.artists.items.map((artistResponse) => ({
       name: artistResponse.name,
       spotifyId: artistResponse.id,
-      popularity: artistResponse.popularity
+      popularity: artistResponse.popularity,
     }))[0];
   }
 
-  async populateMissingArtistDetails(artists: ArtistReference[]): Promise<ArtistReference[]> {
+  async populateMissingArtistDetails(
+    artists: ArtistReference[]
+  ): Promise<ArtistReference[]> {
     if (artists.every((artist) => artist.spotifyId !== undefined)) {
-      const artistDetailIds = Array.from(new Set(artists
-          .map((artist) => artist.spotifyId ?? "")));
+      const artistDetailIds = Array.from(
+        new Set(artists.map((artist) => artist.spotifyId ?? ""))
+      );
       return await this.getArtists(artistDetailIds);
     } else {
-      const artistDetailPromise = artists
-          .map((artist) => this.searchArtist(artist.name));
-      return Promise.all(artistDetailPromise)
-          .then((artistDetails) => {
-                artistDetails.forEach((artistDetail) => {
-                  if (artistDetail) {
-                    let updatedArtist = artists.find((artist) => artist.name === artistDetail.name);
-                    if (updatedArtist) {
-                      updatedArtist.spotifyId = artistDetail.spotifyId;
-                      updatedArtist.name = artistDetail.name;
-                      updatedArtist.popularity = artistDetail.popularity;
-                    }
-                  }
-                })
-            return artistDetails;
-              }
-          )
+      const artistDetailPromise = artists.map((artist) =>
+        this.searchArtist(artist.name)
+      );
+      return Promise.all(artistDetailPromise).then((artistDetails) => {
+        artistDetails.forEach((artistDetail) => {
+          if (artistDetail) {
+            let updatedArtist = artists.find(
+              (artist) => artist.name === artistDetail.name
+            );
+            if (updatedArtist) {
+              updatedArtist.spotifyId = artistDetail.spotifyId;
+              updatedArtist.name = artistDetail.name;
+              updatedArtist.popularity = artistDetail.popularity;
+            }
+          }
+        });
+        return artistDetails;
+      });
     }
   }
 }

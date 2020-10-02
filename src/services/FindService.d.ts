@@ -8,5 +8,7 @@ interface FindService {
   getPlaylistArtists(id: string): Promise<ArtistReference[]>;
   getArtists(ids: string[]): Promise<ArtistReference[]>;
   searchArtist(name: string): Promise<ArtistReference>;
-  populateMissingArtistDetails(artists: ArtistReference[]): Promise<ArtistReference[]>;
+  populateMissingArtistDetails(
+    artists: ArtistReference[]
+  ): Promise<ArtistReference[]>;
 }

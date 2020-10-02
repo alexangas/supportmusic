@@ -9,7 +9,7 @@ import { SpotifyFindService } from "./services/SpotifyFindService";
 import SpotifyFind from "./find/spotify/SpotifyFind";
 import TextEntry from "./find/text/TextEntry";
 import TextUpload from "./find/text/TextUpload";
-import {Results} from "./results/Results";
+import { Results } from "./results/Results";
 
 type AppState = {
   artists?: ArtistReference[];

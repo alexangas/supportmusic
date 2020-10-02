@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 import { TextEntryService } from "../../services/TextEntryService";
-import {SpotifyFindService} from "../../services/SpotifyFindService";
+import { SpotifyFindService } from "../../services/SpotifyFindService";
 
 type TextUploadProps = {
   refreshArtists(artists: ArtistReference[]): void;
@@ -25,16 +25,15 @@ export const TextUpload = ({
     fileReader.onload = (e) => {
       const fileContents = e.target?.result;
       const artists: ArtistReference[] = fileContents
-          ? textEntryService
-              .getCleanedArtists(fileContents.toString(), /\n/g)
-              .map((name) => ({ name }))
-          : [];
+        ? textEntryService
+            .getCleanedArtists(fileContents.toString(), /\n/g)
+            .map((name) => ({ name }))
+        : [];
 
       if (spotifyFindService.isAuthenticated()) {
-        spotifyFindService.populateMissingArtistDetails(artists)
-            .then(() => {
-              refreshArtists(artists);
-            });
+        spotifyFindService.populateMissingArtistDetails(artists).then(() => {
+          refreshArtists(artists);
+        });
       } else {
         refreshArtists(artists);
       }

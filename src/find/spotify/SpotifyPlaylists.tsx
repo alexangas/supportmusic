@@ -60,11 +60,12 @@ class SpotifyPlaylists extends React.Component<
     const results = await this.spotifyFindService.getPlaylistArtists(
       selectedPlaylistId
     );
-      this.spotifyFindService.populateMissingArtistDetails(results)
-          .then((populatedArtists) => {
-            this.setState({ isLoadingArtists: false });
-            this.props.refreshArtists(populatedArtists);
-          });
+    this.spotifyFindService
+      .populateMissingArtistDetails(results)
+      .then((populatedArtists) => {
+        this.setState({ isLoadingArtists: false });
+        this.props.refreshArtists(populatedArtists);
+      });
   };
 
   render() {
