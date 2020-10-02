@@ -152,17 +152,27 @@ export class SpotifyFindService implements FindService {
 
   async getArtists(ids: string[]): Promise<ArtistReference[]> {
     let response;
-    try {
-      response = await this.spotify.getArtists(ids);
-    } catch (err) {
-      this.clearAuthentication();
-      throw err;
+    let artists: ArtistReference[] = [];
+    console.log("ids", ids);
+    for (let idCount = 0; idCount < ids.length; idCount += 50)
+    {
+      const idSlice = ids.slice(idCount, idCount + 50);
+      console.log("idSlice", idSlice);
+      try {
+        response = await this.spotify.getArtists(idSlice);
+      } catch (err) {
+        this.clearAuthentication();
+        throw err;
+      }
+      console.log("getArtists", response);
+      artists = artists.concat(response.artists.map((artistResponse) => ({
+        name: artistResponse.name,
+        spotifyId: artistResponse.id,
+        popularity: artistResponse.popularity
+      })));
     }
-    return response.artists.map((artistResponse) => ({
-      name: artistResponse.name,
-      spotifyId: artistResponse.id,
-      popularity: artistResponse.popularity
-    }));
+    console.log("artists", JSON.parse(JSON.stringify(artists)));
+    return artists;
   }
 
   async searchArtist(name: string): Promise<ArtistReference> {
@@ -184,8 +194,8 @@ export class SpotifyFindService implements FindService {
 
   async populateMissingArtistDetails(artists: ArtistReference[]): Promise<ArtistReference[]> {
     if (artists.every((artist) => artist.spotifyId !== undefined)) {
-      const artistDetailIds = artists
-          .map((artist) => artist.spotifyId ?? "");
+      const artistDetailIds = Array.from(new Set(artists
+          .map((artist) => artist.spotifyId ?? "")));
       return await this.getArtists(artistDetailIds);
     } else {
       const artistDetailPromise = artists

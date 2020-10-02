@@ -35,6 +35,8 @@ export const TextUpload = ({
             .then(() => {
               refreshArtists(artists);
             });
+      } else {
+        refreshArtists(artists);
       }
     };
     fileReader.readAsText(file);

@@ -29,6 +29,8 @@ export const TextEntry = ({ refreshArtists }: TextEntryProps): JSX.Element => {
           .then(() => {
             refreshArtists(artists);
           });
+    } else {
+      refreshArtists(artists);
     }
   }
 

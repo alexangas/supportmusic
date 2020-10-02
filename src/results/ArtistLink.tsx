@@ -9,7 +9,7 @@ type ArtistLinkProps = {
 
 export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
   return (
-    <Card>
+    <Card data-popularity={artist.popularity}>
       <Card.Header>{artist.name}</Card.Header>
       <Card.Body>
         <Button
@@ -20,7 +20,6 @@ export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
           target="_blank"
           rel="noreferrer noopener"
         >
-            <p>{artist.popularity}</p>
           <img
             src={BandcampButton}
             alt="Bandcamp button"
