@@ -10,7 +10,7 @@ type ArtistLinkProps = {
 export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
   return (
     <Card>
-      <Card.Header>{artist}</Card.Header>
+      <Card.Header>{artist.name}</Card.Header>
       <Card.Body>
         <Button
           as="a"

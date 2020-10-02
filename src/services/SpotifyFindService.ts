@@ -1,7 +1,7 @@
 import SpotifyWebApi from "spotify-web-api-js";
 import * as cookies from "js-cookie";
 import queryString from "query-string";
-import { getAllPages } from "./SpotifyPagination";
+import {getAllPages} from "./SpotifyPagination";
 
 export enum TopArtistsTimeRange {
   ShortTerm = "short_term",
@@ -147,5 +147,21 @@ export class SpotifyFindService implements FindService {
       }
     });
     return Array.from(artistSet);
+  }
+
+  async searchArtist(name: string): Promise<ArtistReference> {
+    let response;
+    try {
+      response = await this.spotify.searchArtists(encodeURIComponent(name), {
+        limit: 1
+      });
+    } catch (err) {
+      this.clearAuthentication();
+      throw err;
+    }
+    return response.artists.items.map((artistResponse) => ({
+      name: artistResponse.name,
+      spotifyId: artistResponse.id
+    }))[0];
   }
 }

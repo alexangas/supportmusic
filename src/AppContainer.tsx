@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Tab, Tabs, Row, Col, CardColumns } from "react-bootstrap";
+import { Container, Tab, Tabs, Row, Col } from "react-bootstrap";
 import { IoLogoGithub } from "react-icons/io";
 import { FaTwitter } from "react-icons/fa";
 
@@ -9,7 +9,7 @@ import { SpotifyFindService } from "./services/SpotifyFindService";
 import SpotifyFind from "./find/spotify/SpotifyFind";
 import TextEntry from "./find/text/TextEntry";
 import TextUpload from "./find/text/TextUpload";
-import ArtistLink from "./link/ArtistLink";
+import {Results} from "./results/Results";
 
 type AppState = {
   artists?: ArtistReference[];
@@ -87,25 +87,7 @@ class AppContainer extends React.Component<unknown, AppState> {
             </Row>
           </section>
           <section className="mt-3">
-            {artists && (
-              <>
-                <Row>
-                  <Col lg="12">
-                    <h2 className="display-4">Support artists</h2>
-                    <p>Now find music and merch!</p>
-                    <p>
-                      Bandcamp buttons start a search. Look for results labelled
-                      "artist" to make sure you are supporting them.
-                    </p>
-                  </Col>
-                </Row>
-                <CardColumns>
-                  {artists.sort().map((artist) => (
-                    <ArtistLink key={artist.name} artist={artist} />
-                  ))}
-                </CardColumns>
-              </>
-            )}
+            <Results artists={artists} />
           </section>
         </Container>
         <footer className="pb-4 text-muted">

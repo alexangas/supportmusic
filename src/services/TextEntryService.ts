@@ -9,11 +9,11 @@ export class TextEntryService {
   }
 
   getCleanedArtists(text: string, separator: string | RegExp): string[] {
-    return text
+    return Array.from(new Set(text
       .split(separator)
       .map((value) => value.replace(/\W*/, "").trim())
       .filter(
         (value, _, result) => value.length > 0 && result.indexOf(value) >= 0
-      );
+      )));
   }
 }

@@ -6,4 +6,5 @@ interface FindService {
   getUserArtistsTop(): Promise<ArtistReference[]>;
   getUserPlaylists(): Promise<PlaylistReference[]>;
   getPlaylistArtists(id: string): Promise<ArtistReference[]>;
+  searchArtist(name: string): Promise<ArtistReference>;
 }
