@@ -56,12 +56,15 @@ class SpotifyPlaylists extends React.Component<
       this.playlistElementId
     ) as HTMLSelectElement;
     const selectedPlaylistId = playlistsElement.value;
+
     const results = await this.spotifyFindService.getPlaylistArtists(
       selectedPlaylistId
     );
-
-    this.setState({ isLoadingArtists: false });
-    this.props.refreshArtists(results);
+      this.spotifyFindService.populateMissingArtistDetails(results)
+          .then((populatedArtists) => {
+            this.setState({ isLoadingArtists: false });
+            this.props.refreshArtists(populatedArtists);
+          });
   };
 
   render() {

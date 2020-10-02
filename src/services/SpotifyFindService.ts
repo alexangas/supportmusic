@@ -97,6 +97,7 @@ export class SpotifyFindService implements FindService {
     return response.items.map((itemResponse) => ({
       name: itemResponse.name,
       spotifyId: itemResponse.id,
+      popularity: itemResponse.popularity
     }));
   }
 
@@ -149,6 +150,21 @@ export class SpotifyFindService implements FindService {
     return Array.from(artistSet);
   }
 
+  async getArtists(ids: string[]): Promise<ArtistReference[]> {
+    let response;
+    try {
+      response = await this.spotify.getArtists(ids);
+    } catch (err) {
+      this.clearAuthentication();
+      throw err;
+    }
+    return response.artists.map((artistResponse) => ({
+      name: artistResponse.name,
+      spotifyId: artistResponse.id,
+      popularity: artistResponse.popularity
+    }));
+  }
+
   async searchArtist(name: string): Promise<ArtistReference> {
     let response;
     try {
@@ -161,7 +177,34 @@ export class SpotifyFindService implements FindService {
     }
     return response.artists.items.map((artistResponse) => ({
       name: artistResponse.name,
-      spotifyId: artistResponse.id
+      spotifyId: artistResponse.id,
+      popularity: artistResponse.popularity
     }))[0];
+  }
+
+  async populateMissingArtistDetails(artists: ArtistReference[]): Promise<ArtistReference[]> {
+    if (artists.every((artist) => artist.spotifyId !== undefined)) {
+      const artistDetailIds = artists
+          .map((artist) => artist.spotifyId ?? "");
+      return await this.getArtists(artistDetailIds);
+    } else {
+      const artistDetailPromise = artists
+          .map((artist) => this.searchArtist(artist.name));
+      return Promise.all(artistDetailPromise)
+          .then((artistDetails) => {
+                artistDetails.forEach((artistDetail) => {
+                  if (artistDetail) {
+                    let updatedArtist = artists.find((artist) => artist.name === artistDetail.name);
+                    if (updatedArtist) {
+                      updatedArtist.spotifyId = artistDetail.spotifyId;
+                      updatedArtist.name = artistDetail.name;
+                      updatedArtist.popularity = artistDetail.popularity;
+                    }
+                  }
+                })
+            return artistDetails;
+              }
+          )
+    }
   }
 }

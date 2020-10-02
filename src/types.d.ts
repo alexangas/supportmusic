@@ -6,4 +6,5 @@ type PlaylistReference = {
 type ArtistReference = {
   spotifyId?: string;
   name: string;
+  popularity?: number;
 };

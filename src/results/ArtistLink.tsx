@@ -20,6 +20,7 @@ export const ArtistLink = ({ artist }: ArtistLinkProps): JSX.Element => {
           target="_blank"
           rel="noreferrer noopener"
         >
+            <p>{artist.popularity}</p>
           <img
             src={BandcampButton}
             alt="Bandcamp button"
