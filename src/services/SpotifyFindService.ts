@@ -83,7 +83,7 @@ export class SpotifyFindService implements FindService {
 
   async getUserArtistsTop(
     timeRangeKey?: TopArtistsTimeRangeStrings
-  ): Promise<string[]> {
+  ): Promise<ArtistReference[]> {
     let response;
     try {
       response = await this.spotify.getMyTopArtists({
@@ -94,7 +94,11 @@ export class SpotifyFindService implements FindService {
       this.clearAuthentication();
       throw err;
     }
-    return response.items.map((itemResponse) => itemResponse.name);
+    return response.items.map((itemResponse) => ({
+      name: itemResponse.name,
+      spotifyId: itemResponse.id,
+      popularity: itemResponse.popularity,
+    }));
   }
 
   async getUserPlaylists(): Promise<PlaylistReference[]> {
@@ -111,35 +115,111 @@ export class SpotifyFindService implements FindService {
       ?.filter((itemResponse) => itemResponse.tracks.total > 0)
       .map((itemResponse) => ({
         name: itemResponse.name,
-        id: itemResponse.id,
+        spotifyId: itemResponse.id,
       }));
   }
 
-  async getPlaylistArtists(id: string): Promise<string[]> {
+  async getPlaylistArtists(id: string): Promise<ArtistReference[]> {
     let response;
     try {
       response = await getAllPages<SpotifyApi.PlaylistTrackResponse>(
-          this.spotify,
-          this.spotify.getPlaylistTracks(id, {
-            fields: "items(track(artists(id,name))),next",
-            limit: 100,
-          })
+        this.spotify,
+        this.spotify.getPlaylistTracks(id, {
+          fields: "items(track(artists(id,name))),next",
+          limit: 100,
+        })
       );
     } catch (err) {
       this.clearAuthentication();
       throw err;
     }
-    const artistSet = new Set<string>();
+    const artistSet = new Set<ArtistReference>();
     response.items.forEach((trackItemResponse) => {
       const track = trackItemResponse?.track as SpotifyApi.TrackObjectSimplified;
       if (track) {
         track.artists.forEach((artist) => {
           if (artist) {
-            artistSet.add(artist.name);
+            artistSet.add({
+              name: artist.name,
+              spotifyId: artist.id,
+            });
           }
         });
       }
     });
     return Array.from(artistSet);
+  }
+
+  async getArtists(ids: string[]): Promise<ArtistReference[]> {
+    let response;
+    let artists: ArtistReference[] = [];
+    console.log("ids", ids);
+    for (let idCount = 0; idCount < ids.length; idCount += 50) {
+      const idSlice = ids.slice(idCount, idCount + 50);
+      console.log("idSlice", idSlice);
+      try {
+        response = await this.spotify.getArtists(idSlice);
+      } catch (err) {
+        this.clearAuthentication();
+        throw err;
+      }
+      console.log("getArtists", response);
+      artists = artists.concat(
+        response.artists.map((artistResponse) => ({
+          name: artistResponse.name,
+          spotifyId: artistResponse.id,
+          popularity: artistResponse.popularity,
+        }))
+      );
+    }
+    console.log("artists", JSON.parse(JSON.stringify(artists)));
+    return artists;
+  }
+
+  async searchArtist(name: string): Promise<ArtistReference> {
+    let response;
+    try {
+      response = await this.spotify.searchArtists(encodeURIComponent(name), {
+        limit: 1,
+      });
+    } catch (err) {
+      this.clearAuthentication();
+      throw err;
+    }
+    return response.artists.items.map((artistResponse) => ({
+      name: artistResponse.name,
+      spotifyId: artistResponse.id,
+      popularity: artistResponse.popularity,
+    }))[0];
+  }
+
+  async populateMissingArtistDetails(
+    artists: ArtistReference[]
+  ): Promise<ArtistReference[]> {
+    if (artists.every((artist) => artist.spotifyId !== undefined)) {
+      const artistDetailIds = Array.from(
+        new Set(artists.map((artist) => artist.spotifyId ?? ""))
+      );
+      return await this.getArtists(artistDetailIds);
+    } else {
+      const artistDetailPromise = artists.map((artist) =>
+        this.searchArtist(artist.name)
+      );
+      return Promise.all(artistDetailPromise).then((artistDetails) => {
+        artistDetails.forEach((artistDetail) => {
+          if (artistDetail) {
+            let updatedArtist = artists.find(
+              (artist) => artist.name === artistDetail.name
+            );
+            if (updatedArtist) {
+              updatedArtist.spotifyId = artistDetail.spotifyId;
+              updatedArtist.name = artistDetail.name;
+              updatedArtist.popularity = artistDetail.popularity;
+            }
+          }
+        });
+        return artistDetails;
+      });
+    }
   }
 }
