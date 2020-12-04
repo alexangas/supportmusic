@@ -35,7 +35,7 @@ jobs:
 
   cypress_e2e:
     needs: build_and_deploy_job
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     name: E2E on Chrome
     steps:
       - name: Initialize test variables
