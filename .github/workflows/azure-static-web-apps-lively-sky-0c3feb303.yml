@@ -43,7 +43,7 @@ jobs:
         run: |
           CYPRESS_BASE_URL="https://lively-sky-0c3feb303.azurestaticapps.net"
           if [ -n "${{ github.event.pull_request.number }}" ]; then CYPRESS_BASE_URL="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.westeurope.azurestaticapps.net" ; fi
-          echo "::set-env name=CYPRESS_BASE_URL::${CYPRESS_BASE_URL}"
+          echo "CYPRESS_BASE_URL=${CYPRESS_BASE_URL}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Cypress E2E Tests
