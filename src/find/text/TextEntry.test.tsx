@@ -29,9 +29,10 @@ test("submits blank artists for refresh", () => {
 test("submits artists for refresh", () => {
   const { textElement, buttonElement, refreshArtists } = setup();
   const sampleArtists = ["ArtistA", "ArtistB", "ArtistC"];
+  const expectedArtists = sampleArtists.map((s) => ({ name: s }));
   fireEvent.change(textElement, {
     target: { value: sampleArtists.join("\n") },
   });
   fireEvent.click(buttonElement);
-  expect(refreshArtists).toBeCalledWith(sampleArtists);
+  expect(refreshArtists).toBeCalledWith(expectedArtists);
 });
