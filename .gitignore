@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+.eslintcache
 
 cypress/screenshots
 cypress/videos
