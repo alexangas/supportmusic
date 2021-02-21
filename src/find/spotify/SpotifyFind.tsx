@@ -3,7 +3,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Button, Form } from "react-bootstrap";
 
 import { SpotifyFindService } from "../../services/SpotifyFindService";
-import SpotifyAuthenticate from "./SpotifyAuthenticate";
 import SpotifyTopArtists from "./SpotifyTopArtists";
 import SpotifyPlaylists from "./SpotifyPlaylists";
 
@@ -18,14 +17,12 @@ export const SpotifyFind = ({
 }: SpotifyFindProps): JSX.Element => {
   const spotifyFindService = SpotifyFindService.getInstance();
 
-  const isAuthenticated = () => {
-    return spotifyFindService.isAuthenticated();
-  };
+  const isAuthenticated = () => spotifyFindService.isAuthenticated();
 
   return (
     <>
       {!isAuthenticated() ? (
-        <SpotifyAuthenticate />
+        <p>What did you do with Spotify</p>
       ) : (
         <>
           <SpotifyTopArtists refreshArtists={refreshArtists} />
