@@ -10,21 +10,24 @@ import SpotifyFind from "./find/spotify/SpotifyFind";
 import TextEntry from "./find/text/TextEntry";
 import TextUpload from "./find/text/TextUpload";
 import { Results } from "./results/Results";
+import { ConnectServices } from "./connect/ConnectServices";
 
 type AppState = {
   artists?: ArtistReference[];
 };
 
 class AppContainer extends React.Component<unknown, AppState> {
-  private spotify: SpotifyFindService;
+  private spotifyFindService: SpotifyFindService;
 
   constructor(props: unknown) {
     super(props);
     this.state = {
       artists: undefined,
     };
-    this.spotify = SpotifyFindService.getInstance();
+    this.spotifyFindService = SpotifyFindService.getInstance();
   }
+
+  isAuthenticated = () => this.spotifyFindService.isAuthenticated();
 
   refreshArtists = (artists: ArtistReference[]) => {
     this.setState({ artists });
@@ -56,7 +59,15 @@ class AppContainer extends React.Component<unknown, AppState> {
           <section className="mt-3">
             <Row>
               <Col lg="12">
-                <h2 className="display-4">Find artists</h2>
+                <h2 className="display-5">Connect to service</h2>
+                <ConnectServices />
+              </Col>
+            </Row>
+          </section>
+          <section className="mt-3">
+            <Row>
+              <Col lg="12">
+                <h2 className="display-5">Find artists</h2>
                 {/*<p>*/}
                 {/*  Provide a list of artists you wish to support either from*/}
                 {/*  Spotify, or upload artist names from your device.*/}
@@ -65,13 +76,19 @@ class AppContainer extends React.Component<unknown, AppState> {
             </Row>
             <Row>
               <Col lg="12">
-                <Tabs id="findArtists" defaultActiveKey="spotify">
-                  <Tab eventKey="spotify" title="Spotify" className="px-3 py-4">
-                    <SpotifyFind
-                      refreshArtists={this.refreshArtists}
-                      newQuery={this.newQuery}
-                    />
-                  </Tab>
+                <Tabs id="findArtists">
+                  {this.isAuthenticated() && (
+                    <Tab
+                      eventKey="spotify"
+                      title="Spotify"
+                      className="px-3 py-4"
+                    >
+                      <SpotifyFind
+                        refreshArtists={this.refreshArtists}
+                        newQuery={this.newQuery}
+                      />
+                    </Tab>
+                  )}
                   <Tab eventKey="textEntry" title="Text" className="px-3 py-4">
                     <TextEntry refreshArtists={this.refreshArtists} />
                   </Tab>

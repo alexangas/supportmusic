@@ -15,7 +15,7 @@ export const Results = ({ artists }: ResultsLinkProps): JSX.Element => {
     <>
       <Row>
         <Col lg="12">
-          <h2 className="display-4">Support artists</h2>
+          <h2 className="display-5">Support artists</h2>
           <p>
             Now find music and merch! Results are sorted from least popular to
             most popular (where data is available).
